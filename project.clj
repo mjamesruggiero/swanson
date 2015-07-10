@@ -7,6 +7,8 @@
                  [compojure "1.3.4"]
                  [ring/ring-core "1.3.2"]
                  [ring/ring-jetty-adapter "1.3.2"]
-                 [cheshire "5.5.0"]]
+                 [cheshire "5.5.0"]
+                 [schejulure "0.1.4"]
+                 [org.flatland/useful "0.10.0"]]
   :main swanson.core
   :profiles {:uberjar {:aot :all}})
