@@ -1,23 +1,25 @@
 (ns swanson.core
   (:require
+    [cheshire.core :as json]
+    [clojure.edn :as edn]
     [compojure.core :refer :all]
     [compojure.handler :refer [site]]
-    [ring.util.response :refer [response status]]
     [ring.adapter.jetty :refer [run-jetty]]
-    [cheshire.core :as json]))
+    [ring.util.response :refer [response status]]))
 
-(def players (atom ()))
+(def snippets (repeatedly promise))
 
-(defn list-players []
-  (response (json/encode @players)))
+(future
+  (doseq [snippet (map deref snippets)]
+    (println snippet)))
 
-(defn create-player "doc-string" [player-name]
-  (swap! players conj player-name)
-  (status (response "") 201))
+(defn accept-snippet "enter snippets structure" [n text]
+  (deliver (nth snippets n) text))
 
 (defroutes app-routes
-  (GET "/players" [] (list-players))
-  (PUT "/players/:player-name" [player-name] (create-player player-name)))
+  (PUT "/snippet/:n" [n :as {:keys [body]}]
+       (accept-snippet (edn/read-string n) (slurp body))
+       (response "OK")))
 
 (defn -main [& args]
   (run-jetty (site app-routes) {:port 3000}))
