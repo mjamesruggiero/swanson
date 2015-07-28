@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <script type="text/javascript"
+                src="https://code.jquery.com/jquery-1.11.3.js"></script>
+        <script type="text/javascript">
+            function renderUsers(users) {
+                $('#user-list').empty();
+                for(user in users) {
+                    $('#user-list').append($('<li/>', {html: users[user]}));
+                }
+            }
+            function getUsers() {
+                $.get("/users", renderUsers);
+            }
+            function handleError(xhr) {
+                $('#error').text(xhr.statusText + ": " + xhr.responseText);
+            }
+            function addUser() {
+                var jqxhr = $.post("/add-user", {user: $('#name').val()}, renderUsers)
+                             .fail(handleError);
+            }
+            $(function() {getUsers();});
+        </script>
+    </head>
+    <body>
+        <h1>Current Users</h1>
+        <ul id="user-list"></ul>
+        <input type="text" id="name" placeholder="user name"/>
+        <button onclick="addUser()">Add user</button>
+    </body>
+</html>

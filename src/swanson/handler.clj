@@ -17,7 +17,4 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
-(def app
-  (-> (routes home-routes app-routes)
-      (handler/site)
-      (wrap-base-url)))
+(def app (-> (routes home-routes app-routes) handler/site))
