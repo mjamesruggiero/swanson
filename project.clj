@@ -12,6 +12,7 @@
   :ring {:handler swanson.handler/app
          :init swanson.handler/init
          :destroy swanson.handler/destroy}
+  :main swanson.start
   :profiles
   {:uberjar {:aot :all}
    :production
