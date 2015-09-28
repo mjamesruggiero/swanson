@@ -35,7 +35,14 @@
   (fn [{{{resource :resource} :route-params} :requests}]
     (.lastModified (file (str (io/resource-path) "/home.html")))))
 
+(defresource config [k]
+  :available-media-types ["application/json"]
+  :handle-ok
+  (fn [_]
+    (generate-string {:status "alive" :key k})))
+
 (defroutes home-routes
   (ANY "/" request home)
   (ANY "/add-user" request add-user)
-  (ANY "/users" request get-users))
+  (ANY "/users" request get-users)
+  (ANY "/config/:k" [k] (config k)))
