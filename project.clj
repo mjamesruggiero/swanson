@@ -7,7 +7,9 @@
                  [ring-server "0.3.1"]
                  [liberator "0.11.0"]
                  [cheshire "5.3.1"]
-                 [lib-noir "0.7.2"]]
+                 [lib-noir "0.7.2"]
+                 [org.clojure/java.jdbc "0.2.3"]
+                 [postgresql/postgresql "9.1-901.jdbc4"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler swanson.handler/app
          :init swanson.handler/init
