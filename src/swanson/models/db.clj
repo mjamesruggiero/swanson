@@ -1,5 +1,8 @@
 (ns swanson.models.db
-  (:require [clojure.java.jdbc :as sql]))
+  (:require [clojure.java.jdbc :as sql])
+  (:import [java.security MessageDigest]
+           [javax.xml.bind DatatypeConverter]))
+
 
 (def db {:subprotocol "postgresql"
          :subname "//localhost/swanson"
@@ -73,10 +76,20 @@
       res ["SELECT * FROM transactions WHERE id = ?" id] (first res))))
 
 (defn make-transaction
-  [amt dt desc & category-id]
+  [amt dt desc category-id]
   (sql/with-connection
     db
     (sql/insert-values
       :transactions
       [:amount :date :category_id :description]
       [amt dt category-id desc])))
+
+(defn- sha256-digest [bs]
+  (doto (MessageDigest/getInstance "SHA-256") (.update bs)))
+
+(defn sha256 [msg]
+  (-> msg .getBytes sha256-digest .digest DatatypeConverter/printHexBinary))
+
+(defn mk-transaction-id
+  [date amount description]
+  (sha256 (apply str date amount description)))
