@@ -1,4 +1,4 @@
-(ns swanson.core-test
+(ns swanson.db-test
   (:require [clojure.test :refer :all]
             [swanson.models.db :refer :all]))
 
