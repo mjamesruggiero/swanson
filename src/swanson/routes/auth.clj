@@ -5,7 +5,9 @@
             [swanson.views.layout :as layout]
             [noir.session :as session]
             [noir.response :as response]
-            [noir.validation :as vali]))
+            [noir.validation :as vali]
+            [swanson.models.db :as db]
+            [noir.util.crypt :as crypt]))
 
 (defn valid? [id pass pass1]
   (vali/rule (vali/has-value? id)
@@ -19,23 +21,43 @@
 (defn error-item [[error]]
    [:div.error error])
 
+(defn control [id label field]
+  (list (vali/on-error id error-item)
+  label field
+  [:br]))
+
 (defn registration-page [& [id]]
   (layout/common
     (form-to [:post "/register"]
-             (label "user-id" "user id")
-             (text-field "id" id)
-             [:br]
-             (label "pass" "password")
-             (password-field "pass")
-             [:br]
-             (label "pass1" "retype password")
-             (password-field "pass1")
-             [:br]
-             (submit-button "create account"))))
+             (control :id
+                      (label "user-id" "user id")
+                      (text-field {:tabindex 1} "id" id))
+             (control :pass
+                      (label "pass" "password")
+                      (password-field {:tabindex 2} "pass"))
+             (control :pass1
+                      (label "pass1" "retype password")
+                      (password-field {:tabindex 3} "pass1"))
+             (submit-button {:tabindex 4} "create account"))))
+
+(defn format-error [id ex]
+  (cond
+    (and (instance? org.postgresql.util.PSQLException ex)
+         (= 0 (.getErrorCode ex)))
+    (str "The user with id " id " already exists!")
+    :else
+    "An error has occurred while processing the request"))
 
 (defn handle-registration [id pass pass1]
-  (session/put! :user id)
-  (response/redirect "/"))
+  (if (valid? id pass pass1)
+    (try
+      (db/create-user {:id id :pass (crypt/encrypt pass)})
+      (session/put! :user id)
+      (response/redirect "/")
+      (catch Exception ex
+        (vali/rule false [:id (format-error id ex)])
+        (registration-page)))
+    (registration-page id)))
 
 (defroutes auth-routes
   (GET "/register" []

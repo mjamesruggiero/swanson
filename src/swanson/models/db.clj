@@ -94,7 +94,7 @@
   [date amount description]
   (sha256 (apply str date amount description)))
 
-(defn create-use "create user record" [user]
+(defn create-user "create user record" [user]
   (sql/with-connection
     db
     (sql/insert-record :users user)))
