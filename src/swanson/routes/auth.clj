@@ -4,7 +4,7 @@
             [swanson.routes.home :refer :all]
             [swanson.views.layout :as layout]
             [noir.session :as session]
-            [noir.response :as response]
+            [noir.response :as resp]
             [noir.validation :as vali]
             [swanson.models.db :as db]
             [noir.util.crypt :as crypt]))
@@ -53,7 +53,7 @@
     (try
       (db/create-user {:id id :pass (crypt/encrypt pass)})
       (session/put! :user id)
-      (response/redirect "/")
+      (resp/redirect "/")
       (catch Exception ex
         (vali/rule false [:id (format-error id ex)])
         (registration-page)))

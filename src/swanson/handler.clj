@@ -1,12 +1,10 @@
 (ns swanson.handler
-  (:require [compojure.core :refer [defroutes routes]]
-            [ring.middleware.resource :refer [wrap-resource]]
-            [ring.middleware.file-info :refer [wrap-file-info]]
-            [hiccup.middleware :refer [wrap-base-url]]
-            [compojure.handler :as handler]
-            [compojure.route :as route]
-            [swanson.routes.home :refer [home-routes]]
-            [swanson.routes.auth :refer [auth-routes]]))
+  (:require
+    [compojure.core :refer [defroutes]]
+    [compojure.route :as route]
+    [noir.util.middleware :as noir-middleware]
+    [swanson.routes.auth :refer [auth-routes]]
+    [swanson.routes.home :refer [home-routes]]))
 
 (defn init []
   (println "swanson is starting"))
@@ -18,4 +16,7 @@
   (route/resources "/")
   (route/not-found "Not Found"))
 
-(def app (-> (routes auth-routes home-routes app-routes) handler/site))
+(def app (noir-middleware/app-handler
+           [auth-routes
+            home-routes
+            app-routes]))

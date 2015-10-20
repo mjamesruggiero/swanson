@@ -4,7 +4,7 @@
             [noir.session :as session]))
 
 (defn home []
-  (layout/common [:h1 "Hello folks"]))
+  (layout/common [:h1 "Hello " (session/get :user)]))
 
 (defroutes home-routes
-  (ANY "/" [] (home)))
+  (GET "/" [] (home)))
