@@ -36,21 +36,20 @@
       [:id "serial primary key"]
       [:name "varchar(512) NOT NULL"])))
 
+(defmacro with-db [f & body]
+  `(sql/with-connection ~db (~f ~@body)))
+
 (defn get-user
   [id]
-  (sql/with-connection
-    db
-    (sql/with-query-results
-      res ["SELECT * FROM users WHERE id = ?" id] (first res))))
+  (with-db sql/with-query-results
+    res ["SELECT * FROM users WHERE id = ?" id] (first res)))
 
 (defn make-user
   [fname lname email encrypted-pass]
-  (sql/with-connection
-    db
-    (sql/insert-values
+  (with-db sql/insert-values
       :users
       [:fname :lname :email :encrypted_password]
-      [fname lname email encrypted-pass])))
+      [fname lname email encrypted-pass]))
 
 (defn get-category
   [name]

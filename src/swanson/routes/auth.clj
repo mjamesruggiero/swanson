@@ -59,6 +59,12 @@
         (registration-page)))
     (registration-page id)))
 
+(defn handle-login [id pass]
+  (let [user (db/get-user id)]
+    (if (and user (crypt/compare pass (:pass user)))
+      (session/put! :user id)))
+  (resp/redirect "/"))
+
 (defroutes auth-routes
   (GET "/register" []
        (registration-page))
