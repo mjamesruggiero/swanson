@@ -40,9 +40,9 @@
   `(sql/with-connection ~db (~f ~@body)))
 
 (defn get-user
-  [id]
+  [email]
   (with-db sql/with-query-results
-    res ["SELECT * FROM users WHERE id = ?" id] (first res)))
+    res ["SELECT * FROM users WHERE email = ?" email] (first res)))
 
 (defn make-user
   [fname lname email encrypted-pass]
