@@ -80,3 +80,15 @@
 (defn mk-transaction-id
   [date amount description]
   (sha256 (apply str date amount description)))
+
+(def week-grouping-query
+  "SELECT date_trunc('week', t.date) AS Week , SUM(t.amount) AS total
+  FROM transactions t
+  WHERE t.date > now() - interval '1 year'
+  AND t.amount < 0.00
+  GROUP BY Week
+  ORDER BY Week")
+
+(defn get-transactions-by-week []
+  (with-db sql/with-query-results rows [week-grouping-query]
+      (doall rows)))
