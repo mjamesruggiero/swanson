@@ -8,6 +8,8 @@
   (html5
     [:head
      [:title "Welcome to swanson"]
+     [:script {:type "text/javascript", :src "https://www.google.com/jsapi"}]
+     [:script {:type "text/javascript", :src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
      (include-css "/css/screen.css")]
     [:body content]))
 
