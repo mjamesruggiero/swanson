@@ -1,15 +1,13 @@
 var swanson = {
     drawBasic: function() {
-        //var stubData =
-                //[['City', '2010 Population',],
-                //['New York City, NY', 8175000],
-                //['Los Angeles, CA', 3792000],
-                //['Chicago, IL', 2695000],
-                //['Houston, TX', 2099000],
-                //['Philadelphia, PA', 1526000]];
-
-        var dynamicData = swanson.formatByWeek(swanson.getData());
-        var data = google.visualization.arrayToDataTable(dynamicData);
+        var json = $.ajax({
+            url: "/by-week",
+            dataType: "json",
+            async: false
+            }).responseText;
+        var data = google.visualization.arrayToDataTable(
+                swanson.formatByWeek(JSON.parse(json))
+                );
 
         var options = {
             title: 'Spend by week',
@@ -20,9 +18,7 @@ var swanson = {
             },
             vAxis: { title: 'Date' }
         };
-
         var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-
         chart.draw(data, options);
     },
 
@@ -30,19 +26,20 @@ var swanson = {
         var header = ["Date", "Total"];
         var result = [header];
         for (var i = 0; i < byWeek.length; i++) {
-            result.push([byWeek[i].week, -1 * byWeek[i].total]);
+            var formattedDate = swanson.extractDate(byWeek[i].week);
+            result.push([formattedDate, -1 * byWeek[i].total]);
         }
         return result;
     },
 
-    getData: function() {
-        var json = $.ajax({
-            url: "/by-week",
-            dataType: "json",
-            async: false
-            }).responseText;
-        return JSON.parse(json);
+    extractDate: function(elem) {
+        function numberAt(start, length) {
+            return Number(elem.slice(start, start + length));
+        }
+        //2015-09-28T07:00:00Z
+        return new Date(numberAt(0, 4), numberAt(5, 2) - 1, numberAt(8, 2));
     }
+
 
 };
 
