@@ -37,22 +37,17 @@ var swanson = {
         function numberAt(start, length) {
             return Number(elem.slice(start, start + length));
         }
-        //2015-09-28T07:00:00Z
         return new Date(numberAt(0, 4), numberAt(5, 2) - 1, numberAt(8, 2));
     },
 
     drawTable: function(data) {
-        var table = $('<table border="1" padding="1"></table>');
+        var table = $('<table class="table table-bordered"></table>');
         for(i = 0; i < data.length; i++){
             var row = $('<tr><td>' + data[i][0] + '</td><td>' + data[i][1] + '</td></tr>');
             table.append(row);
         }
         $('#table-div').append(table);
     }
-
-
-
-
 };
 
 google.load('visualization', '1', {packages: ['corechart', 'bar']});
