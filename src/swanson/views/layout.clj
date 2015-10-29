@@ -10,8 +10,11 @@
      [:title "Welcome to swanson"]
      [:script {:type "text/javascript", :src "https://www.google.com/jsapi"}]
      [:script {:type "text/javascript", :src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
-     (include-css "/css/screen.css")]
-    [:body content]))
+     [:script {:src "/js/bootstrap.min.js", :type "text/javascript"}]
+     (include-css "/css/screen.css")
+     (include-css "/css/bootstrap.min.css")
+     (include-css "/css/bootstrap-theme.min.css")]
+    [:body [:div {:class "container"} content ]]))
 
 (defn common [& content]
   (base

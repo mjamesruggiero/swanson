@@ -13,9 +13,10 @@
   (json-response (db/get-transactions-by-week)))
 
 (defn chart []
-  (layout/common [:div {:id "chart_div"}]
-                  [:script {:src "/js/app.js",
-                            :type "text/javascript"}]))
+  (layout/common
+    [:div {:id "chart-div"}]
+    [:div {:id "table-div"}]
+    [:script {:src "/js/app.js", :type "text/javascript"}]))
 
 (defroutes transaction-routes
   (GET "/by-week" [] (by-week))

@@ -5,20 +5,21 @@ var swanson = {
             dataType: "json",
             async: false
             }).responseText;
-        var data = google.visualization.arrayToDataTable(
-                swanson.formatByWeek(JSON.parse(json))
-                );
+        var parsed = swanson.formatByWeek(JSON.parse(json));
+
+        var data = google.visualization.arrayToDataTable(parsed);
 
         var options = {
             title: 'Spend by week',
-            chartArea: {width: '50%'},
+            chartArea: {width: '50%', height: '100%'},
             hAxis: {
                 title: 'Spend',
                 minValue: 0
             },
             vAxis: { title: 'Date' }
         };
-        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.BarChart(document.getElementById('chart-div'));
+        swanson.drawTable(parsed);
         chart.draw(data, options);
     },
 
@@ -38,7 +39,18 @@ var swanson = {
         }
         //2015-09-28T07:00:00Z
         return new Date(numberAt(0, 4), numberAt(5, 2) - 1, numberAt(8, 2));
+    },
+
+    drawTable: function(data) {
+        var table = $('<table border="1" padding="1"></table>');
+        for(i = 0; i < data.length; i++){
+            var row = $('<tr><td>' + data[i][0] + '</td><td>' + data[i][1] + '</td></tr>');
+            table.append(row);
+        }
+        $('#table-div').append(table);
     }
+
+
 
 
 };
