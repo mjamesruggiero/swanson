@@ -1,7 +1,9 @@
 (ns swanson.utils
   (:require
     [clojure.data.csv :as csv]
-    [clojure.java.io :as io]))
+    [clojure.java.io :as io]
+    [clj-time.format :as format]
+    [clj-time.core :as time-core]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -20,3 +22,11 @@
   [filepath]
   (let [parsed-csv (get-csv filepath)]
     (map #(row->map %) parsed-csv)))
+
+(def bank-formatter
+  (format/formatter "yyyy-MM-dd"))
+
+(defn bank-date-to-date
+  "convert standard date string to timestamp"
+  [date-string]
+  (format/parse bank-formatter date-string))
