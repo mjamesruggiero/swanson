@@ -23,3 +23,7 @@
   (testing "test that we can convert a date string to a date [for inserting]"
     (let [date "2015-11-14"]
       (is (= (bank-date-to-date date) (time-core/date-time 2015 11 14))))))
+
+(deftest date-to-timestamp-test
+  (testing "can convert a DateTime to a timestamp"
+    (is (= (java.sql.Timestamp. 1447459200000) (date-to-timestamp (time-core/date-time 2015 11 14))))))

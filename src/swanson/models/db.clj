@@ -1,5 +1,6 @@
 (ns swanson.models.db
-  (:require [clojure.java.jdbc :as sql])
+  (:require [clojure.java.jdbc :as sql]
+             [swanson.utils :refer [bank-date-to-date date-to-timestamp]])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
@@ -66,10 +67,11 @@
 
 (defn create-transaction
   [amt dt desc category-id]
-  (with-db sql/insert-values
+  (let [converted-date (date-to-timestamp (bank-date-to-date dt))]
+    (with-db sql/insert-values
       :transactions
       [:amount :date :category_id :description]
-      [amt dt category-id desc]))
+      [amt converted-date category-id desc])))
 
 (defn- sha256-digest [bs]
   (doto (MessageDigest/getInstance "SHA-256") (.update bs)))

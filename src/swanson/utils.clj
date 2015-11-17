@@ -30,3 +30,7 @@
   "convert standard date string to timestamp"
   [date-string]
   (format/parse bank-formatter date-string))
+
+(defn date-to-timestamp
+  [dt]
+  (java.sql.Timestamp. (.getMillis dt)))
