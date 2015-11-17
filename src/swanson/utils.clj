@@ -34,3 +34,10 @@
 (defn date-to-timestamp
   [dt]
   (java.sql.Timestamp. (.getMillis dt)))
+
+(defn date-converter
+  "Syntactic sugar for string-to-to timestamp conversion"
+  [datestring]
+  (->> datestring
+       bank-date-to-date
+       date-to-timestamp))

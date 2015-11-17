@@ -1,6 +1,6 @@
 (ns swanson.models.db
   (:require [clojure.java.jdbc :as sql]
-             [swanson.utils :refer [bank-date-to-date date-to-timestamp]])
+             [swanson.utils :refer [date-converter]])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
@@ -67,7 +67,7 @@
 
 (defn create-transaction
   [amt dt desc category-id]
-  (let [converted-date (date-to-timestamp (bank-date-to-date dt))]
+  (let [converted-date (date-converter dt)]
     (with-db sql/insert-values
       :transactions
       [:amount :date :category_id :description]
