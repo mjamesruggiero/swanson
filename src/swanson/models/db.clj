@@ -94,3 +94,12 @@
 (defn get-transactions-by-week []
   (with-db sql/with-query-results rows [week-grouping-query]
       (doall rows)))
+
+(defn for-category
+  [category-id]
+  (with-db sql/with-query-results
+    rows
+    ["SELECT id, date, amount, category_id, description
+     FROM transactions
+     WHERE category_id = ?
+     ORDER BY date DESC" category-id] (doall rows)))
