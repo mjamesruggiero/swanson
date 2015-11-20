@@ -3,7 +3,8 @@
     [clojure.data.csv :as csv]
     [clojure.java.io :as io]
     [clj-time.format :as format]
-    [clj-time.core :as time-core]))
+    [clj-time.core :as time-core]
+    [cheshire.core :refer :all]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -41,3 +42,7 @@
   (->> datestring
        bank-date-to-date
        date-to-timestamp))
+
+(defn parse-transaction
+  [json-str]
+  (parse-string json-str true))

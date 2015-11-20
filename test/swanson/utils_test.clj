@@ -31,3 +31,11 @@
 (deftest date-converter-test
   (testing "can convert a string to a timestamp"
     (is (= (java.sql.Timestamp. 1447459200000) (date-converter "2015-11-14")))))
+
+(deftest transaction-parser-test
+  (testing "can parse a valid transaction"
+    (let [expected-map {:date "2015-11-19"
+                        :description "fake description"
+                        :amount 1.00}
+          test-json-string "{\"date\": \"2015-11-19\", \"description\": \"fake description\", \"amount\": 1.00}"]
+      (is (= expected-map (parse-transaction test-json-string))))))
