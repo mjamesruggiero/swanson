@@ -66,12 +66,12 @@
       res ["SELECT * FROM transactions WHERE id = ?" id] (first res)))
 
 (defn create-transaction
-  [amt dt desc category-id]
-  (let [converted-date (date-converter dt)]
+  [{:keys [amount date description]}]
+  (let [converted-date (date-converter date)]
     (with-db sql/insert-values
       :transactions
       [:amount :date :category_id :description]
-      [amt converted-date category-id desc])))
+      [amount converted-date 1 description])))
 
 (defn- sha256-digest [bs]
   (doto (MessageDigest/getInstance "SHA-256") (.update bs)))

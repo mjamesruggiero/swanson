@@ -3,6 +3,7 @@
             [liberator.core :refer [resource defresource]]
             [cheshire.core :as json]
             [swanson.models.db :as db]
+            [swanson.utils :as utils]
             [swanson.views.layout :as layout]))
 
 (defn json-response [data & [status]]
@@ -15,14 +16,12 @@
 
 (defresource post-transaction []
   :allowed-methods [:post]
-  :available-media-types ["text/html"]
-  :handle-ok (fn [ctx]
-               (str "<html>Post text/plain to this resource.<br></html>"))
+  :available-media-types ["application/json"]
+  :handle-ok ::data
   :post! (fn [ctx]
-           (dosync
              (let [body (slurp (get-in ctx [:request :body]))]
-               (format (str "<html>you posted <pre>" body "</pre></html>")))))
-  :post-redirect? (fn [ctx] {:location (format "/chart")}))
+               (db/create-transaction (utils/parse-transaction body))))
+  :respond-with-entity? true)
 
 (defn chart []
   (layout/common
