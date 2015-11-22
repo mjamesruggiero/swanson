@@ -23,6 +23,13 @@
                (db/create-transaction (utils/parse-transaction body))))
   :respond-with-entity? true)
 
+(defresource transaction [id]
+  :allowed-methods [:options :get]
+  :available-media-types ["text/html" "application/json"]
+  :handle-ok (fn [_]
+               (json/generate-string
+                 (db/get-transaction (Integer/parseInt id)))))
+
 (defn chart []
   (layout/common
     [:div {:id "chart-div"}]
@@ -32,4 +39,5 @@
 (defroutes transaction-routes
   (GET "/by-week" [] (by-week))
   (GET "/chart" [] (chart))
+  (ANY "/transactions/:id" [id] (transaction id))
   (POST "/transaction" [] (post-transaction)))
