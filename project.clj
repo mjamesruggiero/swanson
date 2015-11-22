@@ -15,7 +15,9 @@
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler swanson.handler/app
          :init swanson.handler/init
-         :destroy swanson.handler/destroy}
+         :destroy swanson.handler/destroy
+         :auto-reload? true
+         :auto-refresh? true }
   :main swanson.start
   :profiles
   {:uberjar {:aot :all}
