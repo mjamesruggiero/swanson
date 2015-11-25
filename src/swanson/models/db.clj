@@ -1,5 +1,5 @@
 (ns swanson.models.db
-  (:require [clojure.java.jdbc :as sql]
+  (:require [clojure.java.jdbc :as jdbc]
              [swanson.utils :refer [date-converter]])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
@@ -10,10 +10,10 @@
          :password "admin"})
 
 (defmacro with-db [f & body]
-  `(sql/with-connection ~db (~f ~@body)))
+  `(jdbc/with-connection ~db (~f ~@body)))
 
 (defn create-users-table []
-  (with-db sql/create-table
+  (with-db jdbc/create-table
       :users
       [:id "serial primary key"]
       [:fname "varchar(100) NOT NULL"]
@@ -22,7 +22,7 @@
       [:encrypted_password "varchar(100)"]))
 
 (defn create-transactions-table []
-  (with-db sql/create-table
+  (with-db jdbc/create-table
       :transactions
       [:id "serial primary key"]
       [:amount "float NOT NULL"]
@@ -31,44 +31,44 @@
       [:description "varchar(512) NOT NULL"]))
 
 (defn create-categories-table []
-  (with-db sql/create-table
+  (with-db jdbc/create-table
       :categories
       [:id "serial primary key"]
       [:name "varchar(512) NOT NULL"]))
 
 (defn get-user
   [email]
-  (with-db sql/with-query-results
+  (with-db jdbc/with-query-results
     res ["SELECT * FROM users WHERE email = ?" email] (first res)))
 
 (defn create-user
   [fname lname email encrypted-pass]
-  (with-db sql/insert-values
+  (with-db jdbc/insert-values
       :users
       [:fname :lname :email :encrypted_password]
       [fname lname email encrypted-pass]))
 
 (defn get-category
   [name]
-  (with-db sql/with-query-results
+  (with-db jdbc/with-query-results
       res ["SELECT * FROM categories WHERE name = ?" name] (first res)))
 
 (defn create-category
   [category]
-  (with-db sql/insert-values
+  (with-db jdbc/insert-values
       :categories
       [:name]
       [category]))
 
 (defn get-transaction
   [id]
-  (with-db sql/with-query-results
+  (with-db jdbc/with-query-results
       res ["SELECT * FROM transactions WHERE id = ?" id] (first res)))
 
 (defn create-transaction
   [{:keys [amount date description]}]
   (let [converted-date (date-converter date)]
-    (with-db sql/insert-values
+    (with-db jdbc/insert-values
       :transactions
       [:amount :date :category_id :description]
       [amount converted-date 1 description])))
@@ -92,14 +92,22 @@
   ORDER BY Week")
 
 (defn get-transactions-by-week []
-  (with-db sql/with-query-results rows [week-grouping-query]
+  (with-db jdbc/with-query-results rows [week-grouping-query]
       (doall rows)))
 
 (defn for-category
   [category-id]
-  (with-db sql/with-query-results
+  (with-db jdbc/with-query-results
     rows
     ["SELECT id, date, amount, category_id, description
      FROM transactions
      WHERE category_id = ?
      ORDER BY date DESC" category-id] (doall rows)))
+
+(defn update-category-id
+  "Update category id"
+  [id new-category-id]
+  (with-db jdbc/update-values
+    :transactions
+    ["id=?" id]
+    {:category_id new-category-id}))
