@@ -19,10 +19,6 @@ docker-clean:
 docker-run:
 	docker run --rm -p 8080:8080 ${TAG}
 
-# Attach a new terminal to the already running shell
-shell-attach:
-	docker exec -it -u=$(USER) $(TAG) /bin/sh
-
 # Reset everything back to the original version (last git commit)
 src-reset:
 	git reset --hard
