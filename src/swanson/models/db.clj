@@ -1,6 +1,7 @@
 (ns swanson.models.db
   (:require [clojure.java.jdbc :as jdbc]
-             [swanson.utils :refer [date-converter]])
+            [swanson.utils :refer [date-converter]]
+            [clj-time.core :as time-core])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
@@ -111,3 +112,14 @@
     :transactions
     ["id=?" id]
     {:category_id new-category-id}))
+
+(defn transaction-exists
+  "checks if the transaction record already exists"
+  [{:keys [amount date description]}]
+  (let [result
+        (with-db jdbc/with-query-results res
+          ["SELECT COUNT(*) FROM transactions WHERE
+           amount = ? AND
+           date = date(?) AND
+           description = ?" amount date description] (first res))]
+    (> (:count result) 0)))
