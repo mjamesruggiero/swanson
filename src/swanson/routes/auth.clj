@@ -27,8 +27,7 @@
 
 (defn control [id label field]
   (list (vali/on-error id error-item)
-  label field
-  [:br]))
+  [:div.form-group label field]))
 
 (defn registration-page [& [id]]
   (layout/common
