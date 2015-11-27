@@ -14,6 +14,10 @@
 (defn by-week []
   (json-response (db/get-transactions-by-week)))
 
+(defn last-n-transactions [limit]
+  (let [l (utils/parse-number limit 10)]
+  (json-response (db/get-all-transactions l))))
+
 (defresource post-transaction []
   :allowed-methods [:post]
   :available-media-types ["application/json"]
@@ -40,4 +44,5 @@
   (GET "/by-week" [] (by-week))
   (GET "/chart" [] (chart))
   (ANY "/transactions/:id" [id] (transaction id))
-  (POST "/transaction" [] (post-transaction)))
+  (POST "/transaction" [] (post-transaction))
+  (GET "/last-n/:limit" [limit] (last-n-transactions limit)))

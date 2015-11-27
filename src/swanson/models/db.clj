@@ -128,3 +128,8 @@
                      date = date(?) AND
                      description = ?" amount date description])]
     (> (:count (first result)) 0)))
+
+(defn get-all-transactions
+  [limit]
+  (jdbc/query db-spec
+              ["SELECT * FROM transactions ORDER by date DESC LIMIT ?" limit]))

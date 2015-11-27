@@ -46,3 +46,11 @@
 (defn parse-transaction
   [json-str]
   (parse-string json-str true))
+
+(defn parse-number
+  "Reads number from string;
+  if not a number, returns default or zero"
+  [s & default]
+  (if (re-find #"^-?\d+\.?\d*$" s)
+    (read-string s)
+    (first (or default (list 0)))))

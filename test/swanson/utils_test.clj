@@ -39,3 +39,10 @@
                         :amount 1.00}
           test-json-string "{\"date\": \"2015-11-19\", \"description\": \"fake description\", \"amount\": 1.00}"]
       (is (= expected-map (parse-transaction test-json-string))))))
+
+
+(deftest parse-number-test
+  (testing "can convert string to number (and take default)"
+    (is (= 0 (parse-number "foo"))
+    (is (= 1 (parse-number "1"))
+    (is (= 10 (parse-number "foo" 10)))))))
