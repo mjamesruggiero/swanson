@@ -24,5 +24,5 @@
         (form-to [:post "/login"]
                  (text-field {:placeholder "email"} "email")
                  (password-field {:placeholder "password"} "pass")
-                 (submit-button "login"))])
+                 (submit-button {:class "btn btn-default btn-xs"} "login"))])
     content))

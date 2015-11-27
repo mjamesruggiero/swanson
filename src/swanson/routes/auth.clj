@@ -47,7 +47,7 @@
              (control :pass1
                       (label "pass1" "retype password")
                       (password-field {:tabindex 3} "pass1"))
-             (submit-button {:tabindex 4} "create account"))))
+             (submit-button {:class "btn btn-default" :tabindex 4} "create account"))))
 
 (defn format-error [email ex]
   (cond
