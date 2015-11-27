@@ -22,7 +22,7 @@
       [:div (link-to "/logout" (str "logout " user))]
       [:div (link-to "/register" "register")
         (form-to [:post "/login"]
-                 (text-field {:placeholder "screen name"} "id")
+                 (text-field {:placeholder "email"} "email")
                  (password-field {:placeholder "password"} "pass")
                  (submit-button "login"))])
     content))

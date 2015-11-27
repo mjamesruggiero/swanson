@@ -8,10 +8,11 @@
                  [liberator "0.11.0"]
                  [cheshire "5.3.1"]
                  [lib-noir "0.7.2"]
-                 [org.clojure/java.jdbc "0.2.3"]
-                 [postgresql/postgresql "9.1-901.jdbc4"]
+                 [org.clojure/java.jdbc "0.3.0"]
+                 [org.postgresql/postgresql "9.2-1003-jdbc4"]
                  [org.clojure/data.csv "0.1.2"]
-                 [clj-time "0.8.0"]]
+                 [clj-time "0.8.0"]
+                 [java-jdbc/dsl "0.1.0"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler swanson.handler/app
          :init swanson.handler/init
