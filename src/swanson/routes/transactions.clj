@@ -27,6 +27,20 @@
                (db/create-transaction (utils/parse-transaction body))))
   :respond-with-entity? true)
 
+(defresource update-transaction-cateogory [id]
+  :allowed-methods [:put]
+  :available-media-types ["application/json"]
+  :handle-ok ::data
+  :put! (fn [ctx]
+             (let [body (slurp (get-in ctx [:request :body]))
+                   parsed-id (utils/parse-number id)
+                   parsed-transaction (utils/parse-transaction body)
+                   trans-id (:id parsed-transaction)
+                   new-category-id (:category_id parsed-transaction)]
+               (println (str "about to PUT change to id " parsed-id " changing category id to " new-category-id))
+               (db/update-category-id parsed-id new-category-id)))
+  :respond-with-entity? true)
+
 (defresource transaction [id]
   :allowed-methods [:options :get]
   :available-media-types ["text/html" "application/json"]
@@ -44,5 +58,6 @@
   (GET "/by-week" [] (by-week))
   (GET "/chart" [] (chart))
   (ANY "/transactions/:id" [id] (transaction id))
+  (PUT "/transaction/:id/category" [id] (update-transaction-cateogory id))
   (POST "/transaction" [] (post-transaction))
   (GET "/last-n/:limit" [limit] (last-n-transactions limit)))
