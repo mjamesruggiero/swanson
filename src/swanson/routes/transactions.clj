@@ -48,6 +48,15 @@
                (json/generate-string
                  (db/get-transaction (Integer/parseInt id)))))
 
+(defresource transactions []
+  :allowed-methods [:options :get]
+  :available-media-types ["text/html" "application/json"]
+  :handle-ok (fn [ctx]
+              (let [default "25"
+                    l (get-in ctx [:request :params :limit] default)
+                    limit (utils/parse-number l)]
+                (json-response (db/get-all-transactions limit)))))
+
 (defn chart []
   (layout/common
     [:div {:id "chart-div"}]
@@ -57,7 +66,7 @@
 (defroutes transaction-routes
   (GET "/by-week" [] (by-week))
   (GET "/chart" [] (chart))
-  (ANY "/transactions/:id" [id] (transaction id))
-  (PUT "/transaction/:id/category" [id] (update-transaction-cateogory id))
-  (POST "/transaction" [] (post-transaction))
-  (GET "/last-n/:limit" [limit] (last-n-transactions limit)))
+  (GET "/transactions/:id" [id] (transaction id))
+  (PUT "/transactions/:id" [id] (update-transaction-cateogory id))
+  (POST "/transactions" [] (post-transaction))
+  (GET "/transactions" [] (transactions)))
