@@ -37,7 +37,6 @@
                    parsed-transaction (utils/parse-transaction body)
                    trans-id (:id parsed-transaction)
                    new-category-id (:category_id parsed-transaction)]
-               (println (str "about to PUT change to id " parsed-id " changing category id to " new-category-id))
                (db/update-category-id parsed-id new-category-id)))
   :respond-with-entity? true)
 
