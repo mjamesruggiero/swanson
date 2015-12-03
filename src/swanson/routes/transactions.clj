@@ -1,22 +1,18 @@
 (ns swanson.routes.transactions
   (:require [compojure.core :refer :all]
             [liberator.core :refer [resource defresource]]
-            [cheshire.core :as json]
             [swanson.models.db :as db]
             [swanson.utils :as utils]
             [swanson.views.layout :as layout]))
 
-(defn json-response [data & [status]]
-  {:status (or status 200)
-   :headers {"Content-Type" "application/json"}
-   :body (json/generate-string data)})
-
 (defn by-week []
-  (json-response (db/get-transactions-by-week)))
+  (utils/json-response (db/get-transactions-by-week)))
 
-(defn last-n-transactions [limit]
-  (let [l (utils/parse-number limit 10)]
-  (json-response (db/get-all-transactions l))))
+(defn chart []
+  (layout/common
+    [:div {:id "chart-div"}]
+    [:div {:id "table-div"}]
+    [:script {:src "/js/app.js", :type "text/javascript"}]))
 
 (defresource post-transaction []
   :allowed-methods [:post]
@@ -44,7 +40,7 @@
   :allowed-methods [:options :get]
   :available-media-types ["text/html" "application/json"]
   :handle-ok (fn [_]
-               (json/generate-string
+               (utils/json-response
                  (db/get-transaction (Integer/parseInt id)))))
 
 (defresource transactions []
@@ -54,18 +50,12 @@
               (let [default "25"
                     l (get-in ctx [:request :params :limit] default)
                     limit (utils/parse-number l)]
-                (json-response (db/get-all-transactions limit)))))
-
-(defn chart []
-  (layout/common
-    [:div {:id "chart-div"}]
-    [:div {:id "table-div"}]
-    [:script {:src "/js/app.js", :type "text/javascript"}]))
+                (utils/json-response (db/get-all-transactions limit)))))
 
 (defroutes transaction-routes
+  (GET "/transactions" [] (transactions))                          ; index
+  (POST "/transactions" [] (post-transaction))                     ; create
+  (GET "/transactions/:id" [id] (transaction id))                  ; show
+  (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
   (GET "/by-week" [] (by-week))
-  (GET "/chart" [] (chart))
-  (GET "/transactions/:id" [id] (transaction id))
-  (PUT "/transactions/:id" [id] (update-transaction-cateogory id))
-  (POST "/transactions" [] (post-transaction))
-  (GET "/transactions" [] (transactions)))
+  (GET "/chart" [] (chart)))

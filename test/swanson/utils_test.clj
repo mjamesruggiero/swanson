@@ -46,3 +46,12 @@
     (is (= 0 (parse-number "foo"))
     (is (= 1 (parse-number "1"))
     (is (= 10 (parse-number "foo" 10)))))))
+
+(deftest json-response-test
+  (testing "can build generic JSON endpoint response"
+    (let [expected-response {:status 200,
+                             :headers {"Content-Type" "application/json"},
+                             :body "{\"baz\":[1,2,3],\"bar\":\"this is bar\",\"foo\":\"this is foo\"}"}]
+      (is (= expected-response (json-response {:foo "this is foo"
+                                              :bar "this is bar"
+                                              :baz [1 2 3]}))))))
