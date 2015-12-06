@@ -101,8 +101,6 @@
 (defn get-transactions-by-week []
   (jdbc/query db-spec [week-grouping-query]))
 
-(get-transactions-by-week)
-
 (defn for-category
   [category-id]
   (jdbc/query db-spec

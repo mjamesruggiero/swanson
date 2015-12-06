@@ -39,9 +39,16 @@
 (defresource transaction [id]
   :allowed-methods [:options :get]
   :available-media-types ["text/html" "application/json"]
-  :handle-ok (fn [_]
-               (utils/json-response
-                 (db/get-transaction (Integer/parseInt id)))))
+  :exists? (fn [ctx]
+             (let [transaction (db/get-transaction (Integer/parseInt id))
+                   transaction-exists? (not (empty? transaction))]
+               (if transaction-exists?
+                   {:transaction transaction})))
+  :handle-ok (fn [ctx]
+               (get ctx :transaction))
+  :handle-not-found (fn [ctx]
+                      (utils/json-response
+                        {:error (str "Transaction not found for id " id)})))
 
 (defresource transactions []
   :allowed-methods [:options :get]
