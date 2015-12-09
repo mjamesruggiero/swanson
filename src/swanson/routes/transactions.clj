@@ -12,7 +12,9 @@
   (layout/common
     [:div {:id "chart-div"}]
     [:div {:id "table-div"}]
-    [:script {:src "/js/app.js", :type "text/javascript"}]))
+    [:script {:src "/js/app.js", :type "text/javascript"}]
+    [:script {:src "/js/main.js", :type "text/javascript"}]
+    [:button {:onclick "swanson.core.main()"}]))
 
 (defresource post-transaction []
   :allowed-methods [:post]

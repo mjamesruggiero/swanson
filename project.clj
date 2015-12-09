@@ -13,7 +13,9 @@
                  [org.clojure/data.csv "0.1.2"]
                  [clj-time "0.8.0"]
                  [java-jdbc/dsl "0.1.0"]
-                 [org.clojure/clojurescript "0.0-2371"]]
+                 [org.clojure/clojurescript "0.0-2371"]
+                 [cljs-http "0.1.18"]
+                 [org.clojure/core.async "0.2.374"]]
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]]
   :ring {:handler swanson.handler/app
