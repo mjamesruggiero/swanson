@@ -53,6 +53,29 @@
       [:fname :lname :email :encrypted_password]
       [fname lname email encrypted-pass]))
 
+(defn create-categories []
+  (let [names ["amazon"
+               "asset"
+               "atm"
+               "cash"
+               "check"
+               "clothing"
+               "credit card"
+               "dining"
+               "education"
+               "entertainment"
+               "grocery"
+               "health and exercise"
+               "household"
+               "interest"
+               "paypal"
+               "salary"
+               "savings"
+               "transportation"
+               "utilities"]
+        insert-fn #(jdbc/insert! db-spec :categories [:name] [%])]
+    (map insert-fn names)))
+
 (defn get-category
   [name]
   (jdbc/query db-spec
