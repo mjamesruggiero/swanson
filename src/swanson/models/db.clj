@@ -3,7 +3,8 @@
             [java-jdbc.ddl :as ddl]
             [java-jdbc.sql :as sql]
             [swanson.utils :refer [date-converter]]
-            [clj-time.core :as time-core])
+            [clj-time.core :as time-core]
+            [swanson.models.matcher :as matcher])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
@@ -93,15 +94,25 @@
   (jdbc/query db-spec
               (sql/select * :transactions (sql/where {:id id}))))
 
-(def ^:dynamic *default-category-id* 1)
+(defn get-category-id
+  "Get id corresponding to category match or return 'unknown'"
+  [category-name]
+  (let [fetch-category
+        (fn [name] (get (first (jdbc/query db-spec
+                               (sql/select * :categories
+                               (sql/where {:name name})))) :id))
+        category-id (fetch-category category-name)]
+    (or category-id (fetch-category "unknown"))))
 
 (defn create-transaction
   [{:keys [amount date description]}]
-  (let [converted-date (date-converter date)]
+  (let [converted-date (date-converter date)
+        matching-category (matcher/match-description description)
+        category-id (get-category-id matching-category)]
     (jdbc/insert! db-spec
       :transactions
       [:amount :date :category_id :description]
-      [amount converted-date *default-category-id* description])))
+      [amount converted-date category-id description])))
 
 (defn- sha256-digest [bs]
   (doto (MessageDigest/getInstance "SHA-256") (.update bs)))
