@@ -7,7 +7,7 @@ import requests
 import sys
 import time
 
-logging.basicConfig(level=logging.DEBUG, format="%(lineno)d\t%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(lineno)d\t%(message)s")
 
 
 def post_to_client(payload,
@@ -56,8 +56,8 @@ def main(filepath,
 if __name__ == '__main__':
     try:
         filepath = sys.argv[1]
-        LIMIT = 2
-        main(filepath, LIMIT)
+        limit = int(sys.argv[2])
+        main(filepath, limit)
     except Exception, err:
         logging.error("error: {e}".format(e=err))
         print "usage: {0} <filepath>".format(os.path.basename(sys.argv[0]))
