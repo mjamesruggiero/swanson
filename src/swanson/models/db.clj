@@ -165,3 +165,25 @@
   [limit]
   (jdbc/query db-spec
               ["SELECT * FROM transactions ORDER by date DESC LIMIT ?" limit]))
+
+(defn category-monthly
+  "monthly rollup of a category"
+  [category-id]
+  (jdbc/query db-spec
+              ["SELECT EXTRACT(month from transactions.date) month,
+               SUM(transactions.amount)
+               FROM transactions WHERE category_id = ?
+               GROUP by month ORDER
+               BY month DESC" category-id]))
+
+(defn category-daily-current-year
+  "daily rollup of category for current year"
+  [category-id]
+  (jdbc/query db-spec
+              ["SELECT EXTRACT(DOY from transactions.date) doy,
+               SUM(transactions.amount)
+               FROM transactions WHERE category_id = ?
+               AND EXTRACT(ISOYEAR FROM transactions.date) =
+                EXTRACT(ISOYEAR FROM current_date)
+               GROUP by doy
+               ORDER BY doy DESC" category-id]))
