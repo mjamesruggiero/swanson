@@ -56,9 +56,8 @@
                                               :bar "this is bar"
                                               :baz [1 2 3]}))))))
 
-
 (deftest pad-days-pads-das-with-zero
   (testing "given a map of days, any missing days are set as zero"
-    (let [missing-days [{1.0 100, 3.0 100}]]
-      (is (= [{1.0 100, 2.0 0.0, 3.0 100}]
-             (pad-days missing-days [:doy :sum]))))))
+    (let [missing-days {1.0 100, 3.0 100}]
+      (is (= {2.0 0, 1.0 100, 3.0 100}
+             (pad-keys missing-days))))))
