@@ -59,3 +59,13 @@
   {:status (or status 200)
    :headers {"Content-Type" "application/json"}
    :body (generate-string data)})
+
+(defn pad-keys [numeric-map]
+  (let [indices (keys numeric-map)
+        start (reduce min indices)
+        end (reduce max indices)
+        mapped-zeros (into {}
+                           (map hash-map
+                                (range start end)
+                                (repeat end 0)))]
+    (merge mapped-zeros numeric-map)))
