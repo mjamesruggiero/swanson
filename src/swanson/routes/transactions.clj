@@ -61,10 +61,18 @@
                     limit (utils/parse-number l)]
                 (utils/json-response (db/get-all-transactions limit)))))
 
+(defresource category [category-id]
+  :allowed-methods [:options :get]
+  :available-media-types ["text/html" "application/json"]
+  :handle-ok (fn [ctx]
+              (let [result (db/category-monthly (Integer/parseInt category-id))]
+                (utils/json-response result))))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
+  (GET "/categories/:id" [id] (category id))                       ; show
   (GET "/by-week" [] (by-week))
   (GET "/chart" [] (chart)))

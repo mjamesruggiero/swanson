@@ -170,8 +170,8 @@
   "monthly rollup of a category"
   [category-id]
   (jdbc/query db-spec
-              ["SELECT EXTRACT(month from transactions.date) month,
-               SUM(transactions.amount)
+              ["SELECT EXTRACT(month FROM transactions.date) AS month,
+               SUM(transactions.amount) AS amount
                FROM transactions WHERE category_id = ?
                GROUP by month ORDER
                BY month DESC" category-id]))
