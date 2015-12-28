@@ -37291,11 +37291,51 @@ swanson.core.main = function() {
     return main__delegate.call(this, _);
   };
   main.cljs$lang$maxFixedArity = 0;
-  main.cljs$lang$applyTo = function(arglist__13186) {
-    var _ = cljs.core.seq(arglist__13186);
+  main.cljs$lang$applyTo = function(arglist__5112) {
+    var _ = cljs.core.seq(arglist__5112);
     return main__delegate(_);
   };
   main.cljs$core$IFn$_invoke$arity$variadic = main__delegate;
   return main;
 }();
 goog.exportSymbol("swanson.core.main", swanson.core.main);
+goog.provide("swanson.categories");
+goog.require("cljs.core");
+goog.require("goog.dom");
+goog.require("goog.net.XhrIo");
+goog.require("goog.dom");
+goog.require("goog.net.XhrIo");
+goog.require("goog.Uri.QueryData");
+goog.require("clojure.browser.repl");
+goog.require("goog.Uri.QueryData");
+goog.require("goog.structs");
+goog.require("goog.structs");
+goog.require("clojure.browser.repl");
+cljs.core.enable_console_print_BANG_.call(null);
+swanson.categories.categories_callback = function categories_callback(reply_value) {
+  return cljs.core.println.call(null, reply_value.target.getResponseJson());
+};
+swanson.categories.ajax_json = function ajax_json(url) {
+  return goog.net.XhrIo.send(url, swanson.categories.categories_callback);
+};
+swanson.categories.categories = function() {
+  var categories__delegate = function(_) {
+    var url = "/categories/13";
+    return swanson.categories.ajax_json.call(null, url);
+  };
+  var categories = function(var_args) {
+    var _ = null;
+    if (arguments.length > 0) {
+      _ = cljs.core.array_seq(Array.prototype.slice.call(arguments, 0), 0);
+    }
+    return categories__delegate.call(this, _);
+  };
+  categories.cljs$lang$maxFixedArity = 0;
+  categories.cljs$lang$applyTo = function(arglist__5118) {
+    var _ = cljs.core.seq(arglist__5118);
+    return categories__delegate(_);
+  };
+  categories.cljs$core$IFn$_invoke$arity$variadic = categories__delegate;
+  return categories;
+}();
+window.onload = swanson.categories.categories;

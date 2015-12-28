@@ -3,7 +3,8 @@
             [liberator.core :refer [resource defresource]]
             [swanson.models.db :as db]
             [swanson.utils :as utils]
-            [swanson.views.layout :as layout]))
+            [swanson.views.layout :as layout]
+            [hiccup.element :refer [javascript-tag]]))
 
 (defn by-week []
   (utils/json-response (db/get-transactions-by-week)))
@@ -15,6 +16,11 @@
     [:script {:src "/js/app.js", :type "text/javascript"}]
     [:script {:src "/js/main.js", :type "text/javascript"}]
     [:button {:onclick "swanson.core.main()"}]))
+
+(defn categories[]
+  (layout/common
+    [:div {:id "chart-div"}]
+    [:script {:src "/js/main.js", :type "text/javascript"}]))
 
 (defresource post-transaction []
   :allowed-methods [:post]
@@ -63,7 +69,7 @@
 
 (defresource category [category-id]
   :allowed-methods [:options :get]
-  :available-media-types ["text/html" "application/json"]
+  :available-media-types ["application/json"]
   :handle-ok (fn [ctx]
               (let [result (db/category-monthly (Integer/parseInt category-id))]
                 (utils/json-response result))))
@@ -74,5 +80,6 @@
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
   (GET "/categories/:id" [id] (category id))                       ; show
-  (GET "/by-week" [] (by-week))
+  (GET "/categories" [] (categories)))
+  (GET "/by-week" [] (by-week)
   (GET "/chart" [] (chart)))

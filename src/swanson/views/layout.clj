@@ -7,7 +7,7 @@
 (defn base [& content]
   (html5
     [:head
-     [:title "Welcome to swanson"]
+     [:title "swanson"]
      [:script {:type "text/javascript", :src "https://www.google.com/jsapi"}]
      [:script {:type "text/javascript", :src "//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"}]
      [:script {:src "/js/bootstrap.min.js", :type "text/javascript"}]
