@@ -36,4 +36,9 @@
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}}
    :dev
-   {:dependencies [[ring-mock "0.1.5"] [ring/ring-devel "1.3.1"]]}})
+   {:dependencies [[ring-mock "0.1.5"]
+                   [ring/ring-devel "1.3.1"]
+                   [clj-webdriver "0.7.1"]
+                   [org.seleniumhq.selenium/selenium-server "2.47.0"]
+                   [javax.servlet/servlet-api "2.5"]
+                   [ring/ring-jetty-adapter "1.4.0"]]}})
