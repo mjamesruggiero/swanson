@@ -17,7 +17,8 @@
                  [cljs-http "0.1.18"]
                  [org.clojure/core.async "0.2.374"]]
   :plugins [[lein-ring "0.8.12"]
-            [lein-cljsbuild "1.0.3"]]
+            [lein-cljsbuild "1.0.3"]
+            [com.jakemccrary/lein-test-refresh "0.12.0"]]
   :ring {:handler swanson.handler/app
          :init swanson.handler/init
          :destroy swanson.handler/destroy
