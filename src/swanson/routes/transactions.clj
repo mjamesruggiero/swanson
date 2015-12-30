@@ -46,7 +46,7 @@
 
 (defresource transaction [id]
   :allowed-methods [:options :get]
-  :available-media-types ["text/html" "application/json"]
+  :available-media-types ["application/json"]
   :exists? (fn [ctx]
              (let [transaction (db/get-transaction (Integer/parseInt id))
                    transaction-exists? (not (empty? transaction))]
@@ -60,7 +60,7 @@
 
 (defresource transactions []
   :allowed-methods [:options :get]
-  :available-media-types ["text/html" "application/json"]
+  :available-media-types ["application/json"]
   :handle-ok (fn [ctx]
               (let [default "25"
                     l (get-in ctx [:request :params :limit] default)
