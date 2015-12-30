@@ -4,7 +4,8 @@
     [clojure.java.io :as io]
     [clj-time.format :as format]
     [clj-time.core :as time-core]
-    [cheshire.core :refer :all]))
+    [cheshire.core :refer :all]
+    [clojure.data.json :as json]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -55,10 +56,15 @@
     (read-string s)
     (first (or default (list 0)))))
 
+(extend-type java.sql.Date
+  json/JSONWriter
+  (-write [date out]
+    (json/-write (str date) out)))
+
 (defn json-response [data & [status]]
   {:status (or status 200)
    :headers {"Content-Type" "application/json"}
-   :body (generate-string data)})
+   :body (generate-string data {:date-format "yyyy-MM-dd"})})
 
 (defn pad-keys [numeric-map]
   (let [indices (keys numeric-map)
