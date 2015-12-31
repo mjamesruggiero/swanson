@@ -15,7 +15,8 @@
                  [java-jdbc/dsl "0.1.0"]
                  [org.clojure/clojurescript "0.0-2371"]
                  [cljs-http "0.1.18"]
-                 [org.clojure/core.async "0.2.374"]]
+                 [org.clojure/core.async "0.2.374"]
+                 [enfocus "2.1.0"]]
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
             [com.jakemccrary/lein-test-refresh "0.12.0"]]
@@ -34,7 +35,10 @@
   {:uberjar {:aot :all}
    :production
    {:ring
-    {:open-browser? false, :stacktraces? false, :auto-reload? false}}
+    {:open-browser? false,
+     :stacktraces? false,
+     :auto-reload? false}
+    }
    :dev
    {:dependencies [[ring-mock "0.1.5"]
                    [ring/ring-devel "1.3.1"]
