@@ -5,7 +5,8 @@
     [clj-time.format :as format]
     [clj-time.core :as time-core]
     [cheshire.core :refer :all]
-    [clojure.data.json :as json]))
+    [clojure.data.json :as json]
+    [net.cgrand.enlive-html :as html]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -75,3 +76,9 @@
                                 (range start end)
                                 (repeat end 0)))]
     (merge mapped-zeros numeric-map)))
+
+(html/deftemplate index "swanson/views/template.html"
+  [ctx]
+  [:p#message] (html/content (get ctx :message "Nothing")))
+
+(index {:message "foo"})

@@ -61,3 +61,15 @@
     (let [missing-days {1.0 100, 3.0 100}]
       (is (= {2.0 0, 1.0 100, 3.0 100}
              (pad-keys missing-days))))))
+
+(def expected-render ["<html>"
+                      "\n    " "<head><title>swanson</title>\n        </head>"
+                      "<body>" "<p>swanson</p>"
+                      "\n        " "<p id=\"message\">"
+                      "foo" "</p>"
+                      "\n    " "</body>"
+                      "\n\n" "</html>"])
+
+(deftest basic-enlive-template-works
+  (testing "something works"
+    (is (= (index {:message "foo"}) (vec expected-render)))))
