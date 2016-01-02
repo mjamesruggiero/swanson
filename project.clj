@@ -16,7 +16,7 @@
                  [org.clojure/clojurescript "0.0-2371"]
                  [cljs-http "0.1.18"]
                  [org.clojure/core.async "0.2.374"]
-                 [enfocus "2.1.0"]]
+                 [enlive "1.1.1"]]
   :plugins [[lein-ring "0.8.12"]
             [lein-cljsbuild "1.0.3"]
             [com.jakemccrary/lein-test-refresh "0.12.0"]]
