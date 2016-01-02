@@ -80,5 +80,3 @@
 (html/deftemplate index "swanson/views/template.html"
   [ctx]
   [:p#message] (html/content (get ctx :message "Nothing")))
-
-(index {:message "foo"})
