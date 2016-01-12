@@ -62,14 +62,17 @@
       (is (= {2.0 0, 1.0 100, 3.0 100}
              (pad-keys missing-days))))))
 
-(def expected-render ["<html>"
-                      "\n    " "<head><title>swanson</title>\n        </head>"
-                      "<body>" "<p>swanson</p>"
-                      "\n        " "<p id=\"message\">"
-                      "foo" "</p>"
-                      "\n    " "</body>"
-                      "\n\n" "</html>"])
+(def expected-html
+  "<html>\n    <head><title>All Posts</title></head>\n    <body>\n        <table><tr class=\"posts\">\n                <td class=\"month\">12.0</td>\n                <td class=\"amount\">-527.69</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">11.0</td>\n                <td class=\"amount\">-819.9</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">10.0</td>\n                <td class=\"amount\">-670.2</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">9.0</td>\n                <td class=\"amount\">-994.859999999999</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">8.0</td>\n                <td class=\"amount\">-842.0</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">7.0</td>\n                <td class=\"amount\">-654.0</td>\n            </tr></table>\n    </body>\n\n</html>")
+
+(def sample-stats-list
+  [{:amount "-527.69"           :month "12.0"}
+   {:amount "-819.9"            :month "11.0"}
+   {:amount "-670.2"            :month "10.0"}
+   {:amount "-994.859999999999" :month "9.0"}
+   {:amount "-842.0"            :month "8.0"}
+   {:amount "-654.0"            :month "7.0"}])
 
 (deftest basic-enlive-template-works
-  (testing "something works"
-    (is (= (index {:message "foo"}) (vec expected-render)))))
+  (testing "can template a seq of months and amounts to a table"
+    (is (= (reduce str (all-posts-page sample-stats-list)) expected-html))))

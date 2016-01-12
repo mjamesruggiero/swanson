@@ -6,7 +6,12 @@
     [clj-time.core :as time-core]
     [cheshire.core :refer :all]
     [clojure.data.json :as json]
-    [net.cgrand.enlive-html :as html]))
+    [net.cgrand.enlive-html
+     :refer [deftemplate defsnippet
+            content clone-for
+            nth-of-type first-child
+            do-> set-attr
+            sniptest at emit*]]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -77,6 +82,19 @@
                                 (repeat end 0)))]
     (merge mapped-zeros numeric-map)))
 
-(html/deftemplate index "swanson/views/template.html"
+(deftemplate index "swanson/views/template.html"
   [ctx]
-  [:p#message] (html/content (get ctx :message "Nothing")))
+  [:p#message] (content (get ctx :message "Nothing")))
+
+
+(defsnippet post-snippet "swanson/views/test.html"
+  [:tr.posts]
+  [post]
+  [:td.month] (content (:month post))
+  [:td.amount] (content (:amount post)))
+
+(deftemplate all-posts-page "swanson/views/test.html"
+  [post-list]
+  [:title] (content "All Posts")
+  [:body :table]
+  (clone-for [post post-list] (content (post-snippet post))))
