@@ -63,7 +63,29 @@
              (pad-keys missing-days))))))
 
 (def expected-html
-  "<html>\n    <head><title>All Posts</title></head>\n    <body>\n        <table><tr class=\"posts\">\n                <td class=\"month\">12.0</td>\n                <td class=\"amount\">-527.69</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">11.0</td>\n                <td class=\"amount\">-819.9</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">10.0</td>\n                <td class=\"amount\">-670.2</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">9.0</td>\n                <td class=\"amount\">-994.859999999999</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">8.0</td>\n                <td class=\"amount\">-842.0</td>\n            </tr></table><table><tr class=\"posts\">\n                <td class=\"month\">7.0</td>\n                <td class=\"amount\">-654.0</td>\n            </tr></table>\n    </body>\n\n</html>")
+  (reduce str ["<html>\n    "
+  "<head><title>All Posts</title></head>\n    "
+  "<body>\n        "
+  "<table><tr class=\"posts\">\n                "
+  "<td class=\"month\">12.0</td>\n                "
+  "<td class=\"amount\">-527.69</td>\n            "
+  "</tr></table><table><tr class=\"posts\">\n                "
+  "<td class=\"month\">11.0</td>\n                "
+  "<td class=\"amount\">-819.9</td>\n            "
+  "</tr></table><table><tr class=\"posts\">\n                "
+  "<td class=\"month\">10.0</td>\n                "
+  "<td class=\"amount\">-670.2</td>\n            "
+  "</tr></table><table><tr class=\"posts\">\n                "
+  "<td class=\"month\">9.0</td>\n                "
+  "<td class=\"amount\">-994.859999999999</td>\n            "
+  "</tr></table><table><tr class=\"posts\">\n                "
+  "<td class=\"month\">8.0</td>\n                "
+  "<td class=\"amount\">-842.0</td>\n            "
+  "</tr></table><table><tr class=\"posts\">\n                "
+  "<td class=\"month\">7.0</td>\n                "
+  "<td class=\"amount\">-654.0</td>\n            "
+  "</tr></table>\n    "
+  "</body>\n\n</html>"]))
 
 (def sample-stats-list
   [{:amount "-527.69"           :month "12.0"}
