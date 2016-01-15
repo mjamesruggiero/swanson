@@ -86,12 +86,11 @@
   [ctx]
   [:p#message] (content (get ctx :message "Nothing")))
 
-
 (defsnippet post-snippet "swanson/views/test.html"
   [:tr.posts]
   [post]
-  [:td.month] (content (:month post))
-  [:td.amount] (content (:amount post)))
+  [:td.month] (content (str (:month post)))
+  [:td.amount] (content (str (:amount post))))
 
 (deftemplate all-posts-page "swanson/views/test.html"
   [post-list]

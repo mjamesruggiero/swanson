@@ -88,13 +88,15 @@
   "</body>\n\n</html>"]))
 
 (def sample-stats-list
-  [{:amount "-527.69"           :month "12.0"}
-   {:amount "-819.9"            :month "11.0"}
-   {:amount "-670.2"            :month "10.0"}
-   {:amount "-994.859999999999" :month "9.0"}
-   {:amount "-842.0"            :month "8.0"}
-   {:amount "-654.0"            :month "7.0"}])
+  [{:amount -527.69           :month "12.0"}
+   {:amount -819.9            :month "11.0"}
+   {:amount -670.2            :month "10.0"}
+   {:amount -994.859999999999 :month "9.0"}
+   {:amount -842.0            :month "8.0"}
+   {:amount -654.0            :month "7.0"}])
 
 (deftest basic-enlive-template-works
   (testing "can template a seq of months and amounts to a table"
     (is (= (reduce str (all-posts-page sample-stats-list)) expected-html))))
+
+(reduce str (all-posts-page sample-stats-list))
