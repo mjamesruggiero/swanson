@@ -74,11 +74,6 @@
               (let [result (db/category-monthly (Integer/parseInt category-id))]
                 (utils/json-response result))))
 
-(defn category-months [category-id]
-  (reduce str
-          (utils/all-posts-page
-            (db/category-monthly (Integer/parseInt category-id)))))
-
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
@@ -87,5 +82,4 @@
   (GET "/categories/:id" [id] (category id))                       ; show
   (GET "/categories" [] (categories))
   (GET "/by-week" [] (by-week))
-  (GET "/chart" [] (chart))
-  (GET "/category-months/:id" [id] (category-months id)))          ; monthly totals for category
+  (GET "/chart" [] (chart)))
