@@ -4,6 +4,13 @@
             [hiccup.form :refer :all]
             [noir.session :as session]))
 
+(defn header []
+  [:header {:class "navbar navbar-default navbar-fixed-top"}
+   [:div {:class "container" }
+    [:div {:class "navbar-header" }
+     [:a {:href "/" :class "navbar-brand"} "Swanson" ]
+     [:a {:href "/chart" :class "navbar-brand"} "Chart" ] ]]])
+
 (defn base [& content]
   (html5
     [:head
@@ -14,7 +21,9 @@
      (include-css "/css/screen.css")
      (include-css "/css/bootstrap.min.css")
      (include-css "/css/bootstrap-theme.min.css")]
-    [:body [:div {:class "container"} content ]]))
+    [:body
+     (header)
+     [:div {:class "container"} content ]]))
 
 (defn common [& content]
   (base
