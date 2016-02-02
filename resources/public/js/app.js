@@ -19,7 +19,6 @@ var swanson = {
             vAxis: { title: 'Date' }
         };
         var chart = new google.visualization.BarChart(document.getElementById('chart-div'));
-        swanson.drawTable(parsed);
         chart.draw(data, options);
     },
 
@@ -38,34 +37,6 @@ var swanson = {
             return Number(elem.slice(start, start + length));
         }
         return new Date(numberAt(0, 4), numberAt(5, 2) - 1, numberAt(8, 2));
-    },
-
-    drawTable: function(data) {
-        var table = $('<table class="table table-bordered"></table>');
-        for(i = 0; i < data.length; i++){
-            var dateVal = this.formatDate(data[i][0]);
-            var numVal = this.formatNumber(data[i][1]);
-            var row = $('<tr><td>' + dateVal + '</td><td>' + numVal + '</td></tr>');
-            table.append(row);
-        }
-        $('#table-div').append(table);
-    },
-
-    formatDate: function(str) {
-        if ('object' === typeof(str)) {
-            var parts = [ str.getMonth() + 1, str.getDate(), str.getFullYear() ];
-            return parts.join("/");
-        } else {
-            return str;
-        }
-    },
-
-    formatNumber(num) {
-        if ('number' === typeof(num)) {
-            return num.toFixed(2);
-        } else {
-            return num;
-        }
     }
 };
 

@@ -12,10 +12,12 @@
 (defn chart []
   (layout/common
     [:div {:id "chart-div"}]
-    [:div {:id "table-div"}]
     [:script {:src "/js/app.js", :type "text/javascript"}]
-    [:script {:src "/js/main.js", :type "text/javascript"}]
-    [:button {:onclick "swanson.core.main()"}]))
+    [:table {:class "table table-bordered" }
+     [:tr [:th "total"][:th "week"]]
+     (let [weeks (db/get-transactions-by-week)]
+       (for [row weeks]
+         [:tr [:td (:total row)][:td (:week row)]]))]))
 
 (defn categories[]
   (layout/common
