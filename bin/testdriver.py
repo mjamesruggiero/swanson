@@ -60,5 +60,5 @@ if __name__ == '__main__':
         main(filepath, limit)
     except Exception, err:
         logging.error("error: {e}".format(e=err))
-        print "usage: {0} <filepath>".format(os.path.basename(sys.argv[0]))
+        print "usage: {0} <filepath> <limit>".format(os.path.basename(sys.argv[0]))
         sys.exit(1)
