@@ -61,3 +61,10 @@
     (let [missing-days {1.0 100, 3.0 100}]
       (is (= {2.0 0, 1.0 100, 3.0 100}
              (pad-keys missing-days))))))
+
+
+(deftest map-tag-builds-hiccup-sequences
+  (testing "given seq, produces tagged pairs"
+    (let [test-seq ["foo" "bar" "baz" "quux"]
+          expected [[:td "foo"] [:td "bar"] [:td "baz"] [:td "quux"]]]
+      (is (= expected (map-tag :td test-seq))))))

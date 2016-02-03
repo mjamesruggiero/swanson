@@ -2,6 +2,7 @@
   (:require [hiccup.page :refer [html5 include-css]]
             [hiccup.element :refer [link-to]]
             [hiccup.form :refer :all]
+            [swanson.utils :as utils]
             [noir.session :as session]))
 
 (defn header []
@@ -10,6 +11,15 @@
     [:div {:class "navbar-header" }
      [:a {:href "/" :class "navbar-brand"} "Swanson" ]
      [:a {:href "/chart" :class "navbar-brand"} "Chart" ] ]]])
+
+(defn panel-table [headline header-row rows]
+  [:div {:class "panel panel-default"}
+    [:div {:class "panel-heading"} headline]
+    [:div {:class "panel-body"}
+    [:table {:class "table"}
+     [:tr (utils/map-tag :th header-row)]
+     (for [row rows]
+       [:tr (utils/map-tag :td row)])]]])
 
 (defn base [& content]
   (html5

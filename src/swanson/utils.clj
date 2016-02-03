@@ -75,3 +75,8 @@
                                 (range start end)
                                 (repeat end 0)))]
     (merge mapped-zeros numeric-map)))
+
+(defn map-tag
+  "Simple helper for seqs we'll convert to Hiccup"
+  [tag xs]
+  (map (fn [x] [tag x]) xs))

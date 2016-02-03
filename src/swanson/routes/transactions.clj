@@ -13,11 +13,8 @@
   (layout/common
     [:div {:id "chart-div"}]
     [:script {:src "/js/app.js", :type "text/javascript"}]
-    [:table {:class "table table-bordered" }
-     [:tr [:th "total"][:th "week"]]
-     (let [weeks (db/get-transactions-by-week)]
-       (for [row weeks]
-         [:tr [:td (:total row)][:td (:week row)]]))]))
+    (let [weeks (db/get-transactions-by-week)]
+      (layout/panel-table "By Week" [:total :row] weeks))))
 
 (defn categories[]
   (layout/common
