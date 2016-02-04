@@ -130,7 +130,7 @@
   WHERE t.date > now() - interval '1 year'
   AND t.amount < 0.00
   GROUP BY Week
-  ORDER BY Week")
+  ORDER BY Week DESC LIMIT 6")
 
 (defn get-transactions-by-week []
   (jdbc/query db-spec [week-grouping-query]))
