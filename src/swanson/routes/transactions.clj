@@ -11,10 +11,14 @@
 
 (defn chart []
   (layout/common
-    [:div {:id "chart-div"}]
     [:script {:src "/js/app.js", :type "text/javascript"}]
-    (let [weeks (db/get-transactions-by-week)]
-      (layout/panel-table "By Week" [:total :row] weeks))))
+    [:div {:class "container"}
+     (let [weeks (db/get-transactions-by-week)]
+      (layout/panel-table "By Week" [:total :row] weeks))]
+    [:div {:id "chart-div"}]
+    [:div {:class "container"}
+     (let [recent (db/recent-transactions 12)]
+      (layout/panel-table "Recent" [:category :description :date :amount :id] recent))]))
 
 (defn categories[]
   (layout/common

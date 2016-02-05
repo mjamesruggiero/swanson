@@ -166,6 +166,15 @@
   (jdbc/query db-spec
               ["SELECT * FROM transactions ORDER by date DESC LIMIT ?" limit]))
 
+(defn recent-transactions
+  [limit]
+  (jdbc/query db-spec
+              ["SELECT t.id, t.amount, t.date, t.description, c.name
+               FROM transactions t
+               INNER JOIN categories c
+               ON c.id = t.category_id
+               ORDER BY t.date DESC LIMIT ?" limit]))
+
 (defn category-monthly
   "monthly rollup of a category"
   [category-id]
