@@ -15,6 +15,7 @@
     [:div {:class "container"}
      (let [weeks (db/get-transactions-by-week)]
       (layout/panel-table "By Week" [:total :row] weeks))]
+    [:div {:class "container"} [:h2 "Last six weeks"]]
     [:div {:id "chart-div"}]
     [:div {:class "container"}
      (let [recent (db/recent-transactions 12)]

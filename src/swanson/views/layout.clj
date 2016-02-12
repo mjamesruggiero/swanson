@@ -6,18 +6,16 @@
             [noir.session :as session]))
 
 (defn header []
-  [:header {:class "navbar navbar-default navbar-fixed-top"}
-   [:div {:class "container" }
-    [:div {:class "navbar-header" }
-     [:a {:href "/" :class "navbar-brand"} "Swanson" ]
-     [:a {:href "/chart" :class "navbar-brand"} "Chart"]]]
-    (if-let [user (session/get :user)]
-      [:div.pull-right (link-to "/logout" (str "logout " user))]
-      [:div.pull-right (link-to "/register" "register")
-        (form-to [:post "/login"]
-                 (text-field {:placeholder "email"} "email")
-                 (password-field {:placeholder "password"} "pass")
-                 (submit-button {:class "btn btn-default btn-xs"} "login"))])])
+  [:nav {:class "navbar navbar-default navbar-fixed-top" }
+   [:a {:href "/" :class "navbar-brand"} "Swanson" ]
+   [:a {:href "/chart" :class "navbar-brand"} "Chart"]
+   (if-let [user (session/get :user)]
+     [:div.pull-right (link-to "/logout" (str "logout " user))]
+     [:div.pull-right (link-to "/register" "register")
+      (form-to [:post "/login"]
+               (text-field {:placeholder "email"} "email")
+               (password-field {:placeholder "password"} "pass")
+               (submit-button {:class "btn btn-default btn-xs"} "login"))])])
 
 (defn panel-table [headline header-row rows]
   [:div {:class "panel panel-default"}
@@ -40,7 +38,6 @@
      (include-css "/css/bootstrap-theme.min.css")]
     [:body
      (header)
-     [:div {:class "container bs-docs-container"}]
      [:div {:class "container"} content] ]))
 
 (defn common [& content]
