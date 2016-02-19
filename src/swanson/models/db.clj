@@ -128,7 +128,6 @@
   "SELECT date_trunc('week', t.date) AS Week , SUM(t.amount) AS total
   FROM transactions t
   WHERE t.date > now() - interval '1 year'
-  AND t.amount < 0.00
   GROUP BY Week
   ORDER BY Week DESC LIMIT 6")
 

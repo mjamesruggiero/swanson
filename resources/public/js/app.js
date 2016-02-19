@@ -27,7 +27,7 @@ var swanson = {
         var result = [header];
         for (var i = 0; i < byWeek.length; i++) {
             var formattedDate = swanson.extractDate(byWeek[i].week);
-            result.push([formattedDate, -1 * byWeek[i].total]);
+            result.push([formattedDate, byWeek[i].total]);
         }
         return result;
     },

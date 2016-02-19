@@ -2,10 +2,10 @@
 import csv
 import json
 import logging
-import os
 import requests
 import sys
 import time
+import argparse
 
 logging.basicConfig(level=logging.INFO, format="%(lineno)d\t%(message)s")
 
@@ -26,7 +26,7 @@ def build_posts(csv_filepath):
     f = open(filepath, 'rU')
     fields = ('date', 'amount', 'asterisk', 'check', 'description')
     reader = csv.DictReader(f, fieldnames=fields)
-    return map(format_row, [row for row in reader])
+    return filter_negs(map(format_row, [row for row in reader]))
 
 
 def format_date(date_string):
@@ -34,12 +34,20 @@ def format_date(date_string):
     return "{0}-{1}-{2}".format(year, month, day)
 
 
-def format_row(row):
+def reverse_sign(amount):
+    return amount * -1
+
+
+def format_row(row, converter=reverse_sign):
     return {'id': 0,
             'description': row['description'].replace("'", "\\'"),
             'date': format_date(row['date']),
             'category': 'unknown',
-            'amount': float(row['amount'])}
+            'amount': converter(float(row['amount']))}
+
+
+def filter_negs(seq, key='amount'):
+    return filter(lambda x: x[key] >= 0.0, seq)
 
 
 def main(filepath,
@@ -54,11 +62,20 @@ def main(filepath,
         post_to_client(post, endpoint)
 
 if __name__ == '__main__':
+    DESCRIPTION = 'Script that POSTs bank CSV to swanson API'
+    parser = argparse.ArgumentParser(description=DESCRIPTION)
+
+    parser.add_argument('filepath', action="store")
+    parser.add_argument('limit', action="store", type=int)
+
+    logging.info(parser.parse_args())
+
+    arguments = parser.parse_args()
+    filepath = arguments.filepath
+    limit = arguments.limit
+
     try:
-        filepath = sys.argv[1]
-        limit = int(sys.argv[2])
         main(filepath, limit)
     except Exception, err:
         logging.error("error: {e}".format(e=err))
-        print "usage: {0} <filepath> <limit>".format(os.path.basename(sys.argv[0]))
         sys.exit(1)
