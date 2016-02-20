@@ -8,7 +8,7 @@
 (defn header []
   [:nav {:class "navbar navbar-default navbar-fixed-top" }
    [:a {:href "/" :class "navbar-brand"} "Swanson" ]
-   [:a {:href "/chart" :class "navbar-brand"} "Chart"]
+   [:a {:href "/summary" :class "navbar-brand"} "Summary"]
    (if-let [user (session/get :user)]
      [:div.pull-right (link-to "/logout" (str "logout " user))]
      [:div.pull-right (link-to "/register" "register")

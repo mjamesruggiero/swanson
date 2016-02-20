@@ -3,7 +3,7 @@
     [swanson.views.layout :as layout]
     [hiccup.element :refer [javascript-tag]]))
 
-(defn chart [weeks recent]
+(defn summary [weeks recent]
   (layout/common
     [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"}

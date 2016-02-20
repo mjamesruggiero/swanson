@@ -75,4 +75,4 @@
   (GET "/categories/:id" [id] (category id))                       ; show
   (GET "/categories" [] (categories))
   (GET "/by-week" [] (by-week))
-  (GET "/chart" [] (tables/chart (db/get-transactions-by-week) (db/recent-transactions 12))))
+  (GET "/summary" [] (tables/summary (db/get-transactions-by-week) (db/recent-transactions 12))))
