@@ -4,22 +4,11 @@
             [swanson.models.db :as db]
             [swanson.utils :as utils]
             [swanson.views.layout :as layout]
+            [swanson.views.tables :as tables]
             [hiccup.element :refer [javascript-tag]]))
 
 (defn by-week []
   (utils/json-response (db/get-transactions-by-week)))
-
-(defn chart []
-  (layout/common
-    [:script {:src "/js/app.js", :type "text/javascript"}]
-    [:div {:class "container"}
-     (let [weeks (db/get-transactions-by-week)]
-      (layout/panel-table "By Week" [:total :row] weeks))]
-    [:div {:class "container"} [:h2 "Last six weeks"]]
-    [:div {:id "chart-div"}]
-    [:div {:class "container"}
-     (let [recent (db/recent-transactions 12)]
-      (layout/panel-table "Recent" [:category :description :date :amount :id] recent))]))
 
 (defn categories[]
   (layout/common
@@ -86,4 +75,4 @@
   (GET "/categories/:id" [id] (category id))                       ; show
   (GET "/categories" [] (categories))
   (GET "/by-week" [] (by-week))
-  (GET "/chart" [] (chart)))
+  (GET "/chart" [] (tables/chart (db/get-transactions-by-week) (db/recent-transactions 12))))
