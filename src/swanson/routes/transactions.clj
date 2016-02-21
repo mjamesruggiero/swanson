@@ -10,11 +10,6 @@
 (defn by-week []
   (utils/json-response (db/get-transactions-by-week)))
 
-(defn categories[]
-  (layout/common
-    [:div {:id "chart-div"}]
-    [:script {:src "/js/main.js", :type "text/javascript"}]))
-
 (defresource post-transaction []
   :allowed-methods [:post]
   :available-media-types ["application/json"]
@@ -67,12 +62,19 @@
               (let [result (db/category-monthly (Integer/parseInt category-id))]
                 (utils/json-response result))))
 
+(defn categories-ytd []
+  (let [result (db/categories-ytd)]
+    (utils/json-response result)))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
   (GET "/categories/:id" [id] (category id))                       ; show
-  (GET "/categories" [] (categories))
+  (GET "/categories-ytd" [] (categories-ytd))
+  (GET "/categories" [] (tables/categories))
   (GET "/by-week" [] (by-week))
-  (GET "/summary" [] (tables/summary (db/get-transactions-by-week) (db/recent-transactions 12))))
+  (GET "/summary" [] (tables/summary
+                      (db/get-transactions-by-week)
+                                     (db/recent-transactions 12))))

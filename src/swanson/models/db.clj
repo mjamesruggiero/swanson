@@ -195,3 +195,16 @@
                 EXTRACT(ISOYEAR FROM current_date)
                GROUP by doy
                ORDER BY doy DESC" category-id]))
+
+(defn categories-ytd
+  "descending cost of categories for current year"
+  []
+  (jdbc/query db-spec
+   ["SELECT round(sum(amount)::numeric, 2) AS cost,
+    categories.name AS category
+    FROM transactions
+    INNER JOIN categories ON transactions.category_id = categories.id
+    WHERE EXTRACT(ISOYEAR FROM transactions.date) =
+      EXTRACT(ISOYEAR FROM current_date)
+    GROUP BY name
+    ORDER BY cost DESC"]))

@@ -12,3 +12,9 @@
     [:div {:id "chart-div"}]
     [:div {:class "container"}
      (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]))
+
+(defn categories []
+  (layout/common
+    [:script {:src "/js/categories.js", :type "text/javascript"}]
+    [:div {:class "container"} [:h2 "Categories YTD"]]
+    [:div {:id "chart-div"}]))
