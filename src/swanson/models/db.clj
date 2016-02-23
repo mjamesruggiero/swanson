@@ -184,6 +184,17 @@
                GROUP by month ORDER
                BY month DESC" category-id]))
 
+(defn last-n-months
+  "last n months of spend"
+  [months]
+  (jdbc/query db-spec
+              ["SELECT EXTRACT(year FROM transactions.date) AS year,
+               EXTRACT(month FROM transactions.date) AS month,
+               round(SUM(transactions.amount)::numeric, 2) AS amount
+               FROM transactions
+               GROUP by year, month ORDER
+               BY month DESC LIMIT ?" months]))
+
 (defn category-daily-current-year
   "daily rollup of category for current year"
   [category-id]
