@@ -82,4 +82,5 @@
   (GET "/months" [] (months))
   (GET "/summary" [] (tables/summary
                       (db/get-transactions-by-week)
-                                     (db/recent-transactions 12))))
+                      (db/recent-transactions 12)
+                      (db/last-n-months 6))))

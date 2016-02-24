@@ -3,7 +3,7 @@
     [swanson.views.layout :as layout]
     [hiccup.element :refer [javascript-tag]]))
 
-(defn summary [weeks recent]
+(defn summary [weeks recent six-months]
   (layout/common
     [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"}
@@ -11,7 +11,10 @@
     [:div {:class "container"} [:h2 "Last six weeks"]]
     [:div {:id "chart-div"}]
     [:div {:class "container"}
-     (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]))
+     (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]
+    [:div {:class "container"} [:h2 "Last six months"]]
+    [:div {:class "container"}
+     (layout/panel-table "Months" [:amount :month :year] six-months)]))
 
 (defn categories []
   (layout/common
