@@ -13,6 +13,7 @@
     [:div {:class "container"}
      (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]
     [:div {:class "container"} [:h2 "Last six months"]]
+    [:div {:id "six-months-chart-div"}]
     [:div {:class "container"}
      (layout/panel-table "Months" [:amount :month :year] six-months)]))
 

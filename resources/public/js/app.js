@@ -1,11 +1,10 @@
 var swanson = {
-    drawBasic: function() {
-        var json = $.ajax({
-            url: "/by-week",
-            dataType: "json",
-            async: false
-            }).responseText;
-        var parsed = swanson.formatByWeek(JSON.parse(json));
+    drawByWeekChart: function() {
+        var json = $.ajax({ url: "/by-week",
+                            dataType: "json",
+                            async: false }).responseText;
+
+        var parsed = swanson.formatWeeks(JSON.parse(json));
 
         var data = google.visualization.arrayToDataTable(parsed);
 
@@ -22,17 +21,49 @@ var swanson = {
         chart.draw(data, options);
     },
 
-    formatByWeek: function(byWeek) {
+    drawByMonthChart: function() {
+        var json = $.ajax({ url: "/months",
+                            dataType: "json",
+                            async: false }).responseText;
+
+        var parsed = swanson.formatMonths(JSON.parse(json));
+
+        var data = google.visualization.arrayToDataTable(parsed);
+
+        var options = {
+            title: 'Last six months',
+            chartArea: {width: '50%', height: '100%'},
+            hAxis: {
+                title: 'Spend',
+                minValue: 0
+            },
+            vAxis: { title: 'Month' }
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('six-months-chart-div'));
+        chart.draw(data, options);
+    },
+
+    formatWeeks: function(byWeek) {
         var header = ["Date", "Total"];
         var result = [header];
         for (var i = 0; i < byWeek.length; i++) {
-            var formattedDate = swanson.extractDate(byWeek[i].week);
+            var formattedDate = swanson.parseDate(byWeek[i].week);
             result.push([formattedDate, byWeek[i].total]);
         }
         return result;
     },
 
-    extractDate: function(elem) {
+    formatMonths: function(byMonth) {
+        var header = ["Date", "Total"];
+        var result = [header];
+        for (var i = 0; i < byMonth.length; i++) {
+            var formattedDate = new Date(byMonth[i].year, byMonth[i].month - 1, 1);
+            result.push([formattedDate, byMonth[i].amount]);
+        }
+        return result;
+    },
+
+    parseDate: function(elem) {
         function numberAt(start, length) {
             return Number(elem.slice(start, start + length));
         }
@@ -41,4 +72,5 @@ var swanson = {
 };
 
 google.load('visualization', '1', {packages: ['corechart', 'bar']});
-google.setOnLoadCallback(swanson.drawBasic);
+google.setOnLoadCallback(swanson.drawByWeekChart);
+google.setOnLoadCallback(swanson.drawByMonthChart);
