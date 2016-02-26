@@ -219,3 +219,15 @@
       EXTRACT(ISOYEAR FROM current_date)
     GROUP BY name
     ORDER BY cost DESC"]))
+
+(defn categories-last-month
+  "categories for last month"
+  []
+  (jdbc/query db-spec
+              ["SELECT categories.name AS category,
+               round(SUM(amount)::numeric, 2) AS amount
+               FROM transactions INNER JOIN categories
+               ON categories.id = transactions.category_id
+               WHERE date >= date_trunc('month', now()) - INTERVAL '1 month'
+               AND date <= date_trunc('MONTH', now()) - INTERVAL '1 day'
+               GROUP by category ORDER by amount DESC"]))

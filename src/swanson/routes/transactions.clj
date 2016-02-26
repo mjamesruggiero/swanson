@@ -70,6 +70,10 @@
   (let [result (db/last-n-months 6)]
     (utils/json-response result)))
 
+(defn categories-last-month []
+  (let [result (db/categories-last-month)]
+    (utils/json-response result)))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
@@ -79,6 +83,7 @@
   (GET "/categories-ytd" [] (categories-ytd))
   (GET "/categories" [] (tables/categories))
   (GET "/by-week" [] (by-week))
+  (GET "/categories-last-month" [] (categories-last-month))
   (GET "/months" [] (months))
   (GET "/summary" [] (tables/summary
                       (db/get-transactions-by-week)
