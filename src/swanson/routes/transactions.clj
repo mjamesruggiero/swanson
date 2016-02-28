@@ -74,16 +74,22 @@
   (let [result (db/categories-last-month)]
     (utils/json-response result)))
 
+(defn categories-handler [params]
+  (let [scope (get params :scope)]
+    (cond
+      (= "ytd" scope) (categories-ytd)
+      (= "all" scope) (tables/categories)
+      (= "last-month" scope) (categories-last-month))))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
   (GET "/categories/:id" [id] (category id))                       ; show
-  (GET "/categories-ytd" [] (categories-ytd))
-  (GET "/categories" [] (tables/categories))
+  (GET "/categories" {params :params} []
+       (categories-handler params))
   (GET "/by-week" [] (by-week))
-  (GET "/categories-last-month" [] (categories-last-month))
   (GET "/months" [] (months))
   (GET "/summary" [] (tables/summary
                       (db/get-transactions-by-week)
