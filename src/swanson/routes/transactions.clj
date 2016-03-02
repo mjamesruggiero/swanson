@@ -7,9 +7,6 @@
             [swanson.views.tables :as tables]
             [hiccup.element :refer [javascript-tag]]))
 
-(defn by-week []
-  (utils/json-response (db/get-transactions-by-week)))
-
 (defresource post-transaction []
   :allowed-methods [:post]
   :available-media-types ["application/json"]
@@ -46,14 +43,19 @@
                       (utils/json-response
                         {:error (str "Transaction not found for id " id)})))
 
+(def default-params
+  {:months 6
+   :transactions 25})
+
+(defn by-week []
+  (utils/json-response (db/get-transactions-by-week)))
+
 (defn transactions []
-  (let [default "25"
-        l (get-in ctx [:request :params :limit] default)
-        limit (utils/parse-number l)]
+  (let [limit (:transactions default-params)]
     (utils/json-response (db/get-all-transactions limit))))
 
 (defn category [category-id]
-  (let [result (db/category-monhly (Integer/parseInt category-id))]
+  (let [result (db/category-monthly (Integer/parseInt category-id))]
     (utils/json-response result)))
 
 (defn categories-ytd []
@@ -61,7 +63,7 @@
     (utils/json-response result)))
 
 (defn months []
-  (let [result (db/last-n-months 6)]
+  (let [result (db/last-n-months (:months default-params))]
     (utils/json-response result)))
 
 (defn categories-last-month []
@@ -87,5 +89,5 @@
   (GET "/months" [] (months))
   (GET "/summary" [] (tables/summary
                       (db/get-transactions-by-week)
-                      (db/recent-transactions 12)
-                      (db/last-n-months 6))))
+                      (db/recent-transactions (:transactions default-params))
+                      (db/last-n-months (:months default-params)))))
