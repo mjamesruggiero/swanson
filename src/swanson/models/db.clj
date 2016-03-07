@@ -231,3 +231,14 @@
                WHERE date >= date_trunc('month', now()) - INTERVAL '1 month'
                AND date <= date_trunc('MONTH', now()) - INTERVAL '1 day'
                GROUP by category ORDER by amount DESC"]))
+
+(defn category-average
+  "average category transaction per month"
+  [category-id]
+  (jdbc/query db-spec
+              ["SELECT
+               EXTRACT(month from transactions.date) mon,
+               EXTRACT(ISOYEAR from transactions.date) yr,
+               ROUND(AVG(transactions.amount)::numeric, 2) average
+               FROM transactions WHERE category_id = ?
+               GROUP by mon, yr ORDER by mon desc" category-id]))
