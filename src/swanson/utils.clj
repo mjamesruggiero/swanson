@@ -80,3 +80,15 @@
   "Simple helper for seqs we'll convert to Hiccup"
   [tag xs]
   (map (fn [x] [tag x]) xs))
+
+(defn- get-delta-for-similar-maps
+  [list-of-maps delta-key]
+  (let [delta (apply - (map #(delta-key %) list-of-maps))]
+    (merge (dissoc (first list-of-maps) delta-key) {:delta delta})))
+
+(defn compare-category-tallies
+  "compare changes in values of lists of maps"
+  [list-of-maps-1 list-of-maps-2 delta-key grouping-key]
+  (let [test-list-of-maps (into list-of-maps-1 list-of-maps-2)
+        grouped (group-by grouping-key test-list-of-maps)]
+    (map #(get-delta-for-similar-maps % delta-key) (vals grouped))))

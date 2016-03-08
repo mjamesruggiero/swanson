@@ -62,9 +62,22 @@
       (is (= {2.0 0, 1.0 100, 3.0 100}
              (pad-keys missing-days))))))
 
-
 (deftest map-tag-builds-hiccup-sequences
   (testing "given seq, produces tagged pairs"
     (let [test-seq ["foo" "bar" "baz" "quux"]
           expected [[:td "foo"] [:td "bar"] [:td "baz"] [:td "quux"]]]
       (is (= expected (map-tag :td test-seq))))))
+
+(deftest delta-categories-returns-zero-for-no-change
+  (testing "comparing two lists of maps of category amounts details percentage changes"
+    (let [first-lom [{:category "unknown", :cost 2762.27M}
+                     {:category "check", :cost 953.31M}
+                     {:category "savings", :cost 801.00M}]
+          second-lom [{:category "unknown", :cost 2762.27M}
+                      {:category "check", :cost 953.31M}
+                      {:category "savings", :cost 801.00M}]
+          result (compare-category-tallies first-lom second-lom :cost :category)
+          expected '({:category "unknown", :delta 0.00M}
+                     {:category "check", :delta 0.00M}
+                     {:category "savings", :delta 0.00M})]
+    (is (= expected (compare-category-tallies first-lom second-lom :cost :category))))))
