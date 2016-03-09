@@ -5,7 +5,9 @@
             [swanson.utils :as utils]
             [swanson.views.layout :as layout]
             [swanson.views.tables :as tables]
-            [hiccup.element :refer [javascript-tag]]))
+            [noir.session :as session]
+            [hiccup.element :refer [javascript-tag]]
+            [clojure.tools.logging :as log]))
 
 (defresource post-transaction []
   :allowed-methods [:post]
@@ -77,6 +79,13 @@
       (= "all" scope) (tables/categories)
       (= "last-month" scope) (categories-last-month))))
 
+(defn session-handler
+  "return a status code when you are not authenticated"
+  [& handler]
+  (if (session/get :user)
+    handler
+    (utils/json-response {:message "not authorized"})))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index
   (POST "/transactions" [] (post-transaction))                     ; create
@@ -87,7 +96,7 @@
        (categories-handler params))
   (GET "/by-week" [] (by-week))
   (GET "/months" [] (months))
-  (GET "/summary" [] (tables/summary
+  (GET "/summary" [] (session-handler (tables/summary
                       (db/get-transactions-by-week)
                       (db/recent-transactions (:transactions default-params))
-                      (db/last-n-months (:months default-params)))))
+                      (db/last-n-months (:months default-params))))))
