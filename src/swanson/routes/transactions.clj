@@ -84,7 +84,7 @@
   [& handler]
   (if (session/get :user)
     handler
-    (utils/json-response {:message "not authorized"})))
+    (layout/four-oh-one)))
 
 (defroutes transaction-routes
   (GET "/transactions" [] (transactions))                          ; index

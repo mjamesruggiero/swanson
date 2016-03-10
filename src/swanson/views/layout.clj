@@ -42,3 +42,9 @@
 
 (defn common [& content]
   (base content))
+
+(defn four-oh-one
+  []
+  (common
+    [:div {:class "container"}
+    [:div {:class "container"} [:h2 "401 not authorized"]]]))
