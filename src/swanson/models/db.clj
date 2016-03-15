@@ -158,7 +158,7 @@
                      amount = ? AND
                      date = date(?) AND
                      description = ?" amount date description])]
-    (> (:count (first result)) 0)))
+    (pos? (:count (first result)))))
 
 (defn get-all-transactions
   [limit]

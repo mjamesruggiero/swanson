@@ -36,7 +36,7 @@
   :available-media-types ["application/json"]
   :exists? (fn [ctx]
              (let [transaction (db/get-transaction (Integer/parseInt id))
-                   transaction-exists? (not (empty? transaction))]
+                   transaction-exists? (seq? transaction)]
                (if transaction-exists?
                    {:transaction transaction})))
   :handle-ok (fn [ctx]

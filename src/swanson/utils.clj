@@ -23,7 +23,7 @@
   "parse csv into importable map"
   [filepath]
   (let [parsed-csv (get-csv filepath)]
-    (map #(row->map %) parsed-csv)))
+    (map row->map parsed-csv)))
 
 (def bank-formatter
   (format/formatter "yyyy-MM-dd"))
@@ -83,7 +83,7 @@
 
 (defn- get-delta-for-similar-maps
   [list-of-maps delta-key]
-  (let [delta (apply - (map #(delta-key %) list-of-maps))]
+  (let [delta (apply - (map delta-key list-of-maps))]
     (merge (dissoc (first list-of-maps) delta-key) {:delta delta})))
 
 (defn compare-category-tallies
