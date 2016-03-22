@@ -1,7 +1,8 @@
 (ns swanson.views.tables
   (:require
     [swanson.views.layout :as layout]
-    [hiccup.element :refer [javascript-tag]]))
+    [hiccup.element :refer [javascript-tag]]
+    [hiccup.form :as form]))
 
 (defn summary [weeks recent six-months]
   (layout/common
@@ -22,3 +23,17 @@
     [:script {:src "/js/categories.js", :type "text/javascript"}]
     [:div {:class "container"} [:h2 "Categories YTD"]]
     [:div {:id "chart-div"}]))
+
+(defn category-form
+  "generates form for category selection; category 2 is 'unknown'"
+  ([categories transaction-id uri]
+   (category-form categories transaction-id uri 2))
+  ([categories transaction-id uri selected]
+   [:div {:class  "well"}
+    [:form-to {:post uri :novalidate "" :role "form"}
+     [:div {:class "form-group"}
+      (form/label {:class  "control-label"} "category"  "Category")
+      (form/drop-down {:class "form-control"}
+                      (str "category-transaction-" transaction-id)
+                      categories
+                      selected)]]]))
