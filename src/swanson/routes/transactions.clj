@@ -53,8 +53,10 @@
   (utils/json-response (db/get-transactions-by-week)))
 
 (defn transactions []
-  (let [limit (:transactions default-params)]
-    (utils/json-response (db/get-all-transactions limit))))
+  (let [limit (:transactions default-params)
+        transactions (db/get-all-transactions limit)
+        categories (db/all-categories)]
+    (tables/transactions-with-category-form transactions categories)))
 
 (defn category [category-id]
   (let [result (db/category-monthly (Integer/parseInt category-id))]
@@ -87,7 +89,7 @@
     (layout/four-oh-one)))
 
 (defroutes transaction-routes
-  (GET "/transactions" [] (transactions))                          ; index
+  (GET "/transactions" [] (session-handler (transactions)))        ; index
   (POST "/transactions" [] (post-transaction))                     ; create
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update

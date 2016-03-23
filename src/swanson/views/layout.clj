@@ -9,6 +9,7 @@
   [:nav {:class "navbar navbar-default navbar-fixed-top" }
    [:a {:href "/" :class "navbar-brand"} "Swanson" ]
    [:a {:href "/summary" :class "navbar-brand"} "Summary"]
+   [:a {:href "/transactions" :class "navbar-brand"} "Transactions"]
    (if-let [user (session/get :user)]
      [:div.pull-right (link-to "/logout" (str "logout " user))]
      [:div.pull-right (link-to "/register" "register")
@@ -43,8 +44,7 @@
 (defn common [& content]
   (base content))
 
-(defn four-oh-one
-  []
+(defn four-oh-one []
   (common
     [:div {:class "container"}
     [:div {:class "container"} [:h2 "401 not authorized"]]]))

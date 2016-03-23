@@ -242,3 +242,10 @@
                ROUND(AVG(transactions.amount)::numeric, 2) average
                FROM transactions WHERE category_id = ?
                GROUP by mon, yr ORDER by mon desc" category-id]))
+
+(defn all-categories
+  "list of all categories"
+  []
+  (jdbc/query db-spec
+              ["SELECT id, name
+               FROM categories ORDER BY name ASC"]))
