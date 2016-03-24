@@ -8,8 +8,9 @@
                            {:name "bar" :id 2}
                            {:name "baz" :id 3}]
           test-transaction-id 4
-          result (category-form test-categories test-transaction-id
-                                "http://example.com")
+          result (category-form test-categories
+                                "http://example.com"
+                                test-transaction-id)
           form (nth result 1)
           select-metadata (nth (nth result 2) 1)
           options (map second (nth (nth result 2) 2))

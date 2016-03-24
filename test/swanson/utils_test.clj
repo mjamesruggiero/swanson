@@ -81,3 +81,11 @@
                      {:category "check", :delta 0.00M}
                      {:category "savings", :delta 0.00M})]
     (is (= expected (compare-category-tallies first-lom second-lom :cost :category))))))
+
+(deftest maps->keyed-seq-test
+  (testing "turns seq of maps into keyed vectors of map values
+           whose key is the identifying value (e.g. the 'id')"
+    (let [m [{:foo "foo" :bar "bar"} {:foo "not-foo" :bar "not-bar"}]
+          result (maps->keyed-seq m :foo)
+          expected '({"foo" ("bar" "foo")} {"not-foo" ("not-bar" "not-foo")})]
+    (is (= expected result)))))

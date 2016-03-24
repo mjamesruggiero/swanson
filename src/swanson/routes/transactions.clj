@@ -55,8 +55,9 @@
 (defn transactions []
   (let [limit (:transactions default-params)
         transactions (db/get-all-transactions limit)
-        categories (db/all-categories)]
-    (tables/transactions-with-category-form transactions categories)))
+        categories (db/all-categories)
+        url "http://localhost"]
+    (tables/transactions-with-category-form transactions categories url)))
 
 (defn category [category-id]
   (let [result (db/category-monthly (Integer/parseInt category-id))]

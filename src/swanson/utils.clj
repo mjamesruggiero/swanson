@@ -92,3 +92,10 @@
   (let [test-list-of-maps (into list-of-maps-1 list-of-maps-2)
         grouped (group-by grouping-key test-list-of-maps)]
     (map #(get-delta-for-similar-maps % delta-key) (vals grouped))))
+
+(defn maps->keyed-seq
+  "take a key from a list of maps
+  and make it the one key that references
+  each map entry's vals"
+  [l k]
+  (map #(assoc {} (k %) (vals %) ) l))

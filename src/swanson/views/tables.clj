@@ -28,45 +28,40 @@
 
 (defn category-form
   "generates form for category selection; category 2 is 'unknown'"
-  ([categories transaction-id uri]
-   (category-form categories transaction-id uri 2))
-  ([categories transaction-id uri selected]
+  ([categories uri transaction-id]
+   (category-form categories uri transaction-id 2))
+  ([categories uri transaction-id selected]
    [:form-to {:post uri :novalidate "" :role "form"}
     (form/drop-down {:class "form-control"}
                     (str "category-transaction-" transaction-id)
                     (map vals categories)
                     selected)]))
 
-(defn mk-keyed-vectors
-  [l k]
-  (map #(assoc {} (k %) (vals %) ) l))
+(defn- populated-category-form
+  "closure that holds the categories and form URI"
+  [c u] (partial category-form c u))
 
-(defn mk-category-form
-  "converts transaction k->v to category form element"
-  [transaction-rec categories url selected]
-  (category-form categories (first (keys transaction-rec)) url selected))
-
-(defn mk-transaction-row
+(defn- mk-transaction-row
   "converts transaction map to table row"
-  [transaction categories form-url]
+  [transaction category-fn]
   (let [id (first (keys transaction))
         row-as-vec (vec (flatten (vals transaction)))
         selected-category-id (nth row-as-vec 1 2)
-        form-element (mk-category-form transaction categories form-url selected-category-id)]
-    (conj row-as-vec form-element)))
+        form (category-fn id selected-category-id)]
+    (conj row-as-vec form)))
 
-(defn transaction-rows
+(defn- transactions->rows
   "helper that turns raw transactions into useful rows"
-  [transactions categories]
-  (let [keyed-vectors (mk-keyed-vectors transactions :id)
-        url "http://www.foo.com"]
-    (map #(mk-transaction-row % categories url) keyed-vectors)))
+  [transactions categories url]
+  (let [keyed-vectors (utils/maps->keyed-seq transactions :id)
+        category-fn (populated-category-form categories url)]
+    (map #(mk-transaction-row % category-fn) keyed-vectors)))
 
 (defn transactions-with-category-form
   "list of transactions including category update form element"
-  [transactions categories]
+  [transactions categories url]
   (layout/common
     [:div {:class "container"}
      (layout/panel-table "Transactions"
                          [:description :category_id :date :amount :id :category]
-                         (transaction-rows transactions categories))]))
+                         (transactions->rows transactions categories url))]))
