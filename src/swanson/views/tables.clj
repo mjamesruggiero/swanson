@@ -61,6 +61,8 @@
   "list of transactions including category update form element"
   [transactions categories url]
   (layout/common
+    [:script {:src "/js/transactions.js", :type "text/javascript"}]
+    [:p {:id "foo-bar"}]
     [:div {:class "container"}
      (layout/panel-table "Transactions"
                          [:description :category_id :date :amount :id :category]
