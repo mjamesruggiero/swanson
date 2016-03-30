@@ -26,7 +26,7 @@
           (let [body (slurp (get-in ctx [:request :body]))
                 parsed-id (utils/parse-number id)
                 params (utils/parse-transaction body)
-                category-id (:category_id params)]
+                category-id (utils/parse-number (:category_id params))]
             (db/update-category-id parsed-id category-id)))
   :respond-with-entity? true)
 
