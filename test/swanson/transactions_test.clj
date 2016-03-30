@@ -11,6 +11,6 @@
 (deftest test-transactions-route
   (testing  "transactions route works"
     (let  [req (request :put "/transactions/826")
-           json "{\"category_id\": 4}"
+           json "{\"category_id\": \"4\"}"
            response (app (body req json))]
       (is  (= (:status response) 201)))))
