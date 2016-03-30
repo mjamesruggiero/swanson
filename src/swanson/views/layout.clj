@@ -10,6 +10,7 @@
    [:a {:href "/" :class "navbar-brand"} "Swanson" ]
    [:a {:href "/summary" :class "navbar-brand"} "Summary"]
    [:a {:href "/transactions" :class "navbar-brand"} "Transactions"]
+   [:a {:href "/uncategorized" :class "navbar-brand"} "Uncategorized"]
    (if-let [user (session/get :user)]
      [:div.pull-right (link-to "/logout" (str "logout " user))]
      [:div.pull-right (link-to "/register" "register")

@@ -58,6 +58,13 @@
         url "http://localhost"]
     (tables/transactions-with-category-form transactions categories url)))
 
+(defn uncategorized []
+  (let [category (db/get-category "unknown")
+        transactions (db/for-category (:id (first category)))
+        categories (db/all-categories)
+        url "http://localhost"]
+    (tables/transactions-with-category-form transactions categories url)))
+
 (defn category [category-id]
   (let [result (db/category-monthly (Integer/parseInt category-id))]
     (utils/json-response result)))
@@ -98,6 +105,7 @@
        (categories-handler params))
   (GET "/by-week" [] (by-week))
   (GET "/months" [] (months))
+  (GET "/uncategorized" [] (session-handler (uncategorized)))
   (GET "/summary" [] (session-handler (tables/summary
                       (db/get-transactions-by-week)
                       (db/recent-transactions (:transactions default-params))
