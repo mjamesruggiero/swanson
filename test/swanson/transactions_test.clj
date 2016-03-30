@@ -1,23 +1,16 @@
 (ns swanson.transactions-test
-  (:use clojure.test
-        ring.mock.request
-        swanson.handler))
+  (:require [clojure.test :refer :all]
+            [ring.mock.request :refer :all]
+            [swanson.handler :refer :all]))
 
 (deftest test-transactions-route
   (testing  "transactions route works"
     (let  [response  (app  (request :get  "/transactions"))]
       (is  (= (:status response) 200)))))
 
-(def put-args
-  (array-map :description "another fake-ass decscription"
-             :amount 100.00
-             :category_id 4
-             :date "2015-11-20"))
-
-(def req
-  (request :put "/transactions/826" put-args))
-
 (deftest test-transactions-route
   (testing  "transactions route works"
-    (let  [response (app req)]
+    (let  [req (request :put "/transactions/826")
+           json "{\"category_id\": 4}"
+           response (app (body req json))]
       (is  (= (:status response) 201)))))

@@ -18,17 +18,16 @@
                (db/create-transaction (utils/parse-transaction body))))
   :respond-with-entity? true)
 
-(defresource update-transaction-cateogory [id]
+(defresource update-transaction [id]
   :allowed-methods [:put]
   :available-media-types ["application/json"]
   :handle-ok ::data
   :put! (fn [ctx]
-             (let [body (slurp (get-in ctx [:request :body]))
-                   parsed-id (utils/parse-number id)
-                   parsed-transaction (utils/parse-transaction body)
-                   trans-id (:id parsed-transaction)
-                   new-category-id (:category_id parsed-transaction)]
-               (db/update-category-id parsed-id new-category-id)))
+          (let [body (slurp (get-in ctx [:request :body]))
+                parsed-id (utils/parse-number id)
+                params (utils/parse-transaction body)
+                category-id (:category_id params)]
+            (db/update-category-id parsed-id category-id)))
   :respond-with-entity? true)
 
 (defresource transaction [id]
@@ -93,7 +92,7 @@
   (GET "/transactions" [] (session-handler (transactions)))        ; index
   (POST "/transactions" [] (post-transaction))                     ; create
   (GET "/transactions/:id" [id] (transaction id))                  ; show
-  (PUT "/transactions/:id" [id] (update-transaction-cateogory id)) ; update
+  (PUT "/transactions/:id" [id] (update-transaction id))           ; update
   (GET "/categories/:id" [id] (category id))                       ; show
   (GET "/categories" {params :params} []
        (categories-handler params))
