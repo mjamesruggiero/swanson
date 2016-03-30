@@ -1,6 +1,6 @@
 # swanson
 
-Experimenting with concurrency models.
+Spending tracker.
 
 ## Installation
 
