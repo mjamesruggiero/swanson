@@ -9,13 +9,11 @@
                            {:name "baz" :id 3}]
           test-transaction-id 4
           result (category-form test-categories
-                                "http://example.com"
                                 test-transaction-id)
           form (nth result 1)
           select-metadata (nth (nth result 2) 1)
           options (map second (nth (nth result 2) 2))
           names (map last (nth (nth result 2) 2))]
-    (is (= (:post form) "http://example.com"))
     (is (= (:role form) "form"))
     (is (= (:name select-metadata) "category-transaction-4"))
     (is (= '(1 2 3) (map :value options)))

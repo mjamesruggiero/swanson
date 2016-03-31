@@ -54,16 +54,14 @@
 (defn transactions []
   (let [limit (:transactions default-params)
         transactions (db/get-all-transactions limit)
-        categories (db/all-categories)
-        url "http://localhost"]
-    (tables/transactions-with-category-form transactions categories url)))
+        categories (db/all-categories)]
+    (tables/transactions-with-category-form transactions categories)))
 
 (defn uncategorized []
   (let [category (db/get-category "unknown")
         transactions (db/for-category (:id (first category)))
-        categories (db/all-categories)
-        url "http://localhost"]
-    (tables/transactions-with-category-form transactions categories url)))
+        categories (db/all-categories)]
+    (tables/transactions-with-category-form transactions categories)))
 
 (defn category [category-id]
   (let [result (db/category-monthly (Integer/parseInt category-id))]
