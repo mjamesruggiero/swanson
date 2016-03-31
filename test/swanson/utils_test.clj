@@ -89,3 +89,12 @@
           result (maps->keyed-seq m :foo)
           expected '({"foo" ("bar" "foo")} {"not-foo" ("not-bar" "not-foo")})]
     (is (= expected result)))))
+
+(deftest maps->tablerows-test
+  (testing "converts seq of maps into header row and ordered seq of seqs"
+    (let [rows [{:foo "foo1" :bar "bar1" :baz "baz1"}
+                {:foo "foo2" :bar "bar2" :baz "baz2"}]
+          expected '([:bar :foo :baz]
+                     ("bar1" "foo1" "baz1")
+                     ("bar2" "foo2" "baz2"))]
+    (is (= expected (maps->tablerows [:bar :foo :baz] rows))))))

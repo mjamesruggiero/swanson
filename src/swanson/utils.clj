@@ -99,3 +99,11 @@
   each map entry's vals"
   [l k]
   (map #(assoc {} (k %) (vals %) ) l))
+
+(defn maps->tablerows
+  "converts seq of maps into header row
+  and ordered seq of seqs"
+  [ordered rows]
+  (let [f (fn [m] (map m ordered))
+        table (map f rows)]
+    (cons ordered table)))
