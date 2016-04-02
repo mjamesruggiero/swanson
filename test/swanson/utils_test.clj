@@ -98,3 +98,11 @@
                      ("bar1" "foo1" "baz1")
                      ("bar2" "foo2" "baz2"))]
     (is (= expected (maps->tablerows [:bar :foo :baz] rows))))))
+
+(def config-filepath
+  (io/resource "test-config.edn"))
+
+(deftest load-config-test
+  (testing "description"
+    (let [conf (load-config config-filepath)]
+    (is (= {:foo "foo-value" :bar "bar-value"} conf)))))

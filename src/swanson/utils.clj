@@ -5,6 +5,7 @@
     [clj-time.format :as format]
     [clj-time.core :as time-core]
     [cheshire.core :refer :all]
+    [clojure.edn :as edn]
     [clojure.data.json :as json]))
 
 ; TODO might be better to do this w/o filehandle hassles
@@ -107,3 +108,8 @@
   (let [f (fn [m] (map m ordered))
         table (map f rows)]
     (cons ordered table)))
+
+(defn load-config
+  "loads EDN config from a file"
+  [filename]
+  (edn/read-string (slurp filename)))
