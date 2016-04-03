@@ -1,18 +1,27 @@
 (ns swanson.models.db
-  (:require [clojure.java.jdbc :as jdbc]
+  (:require [clj-time.core :as time-core]
+            [clojure.java.io :as io]
+            [clojure.java.jdbc :as jdbc]
             [java-jdbc.ddl :as ddl]
             [java-jdbc.sql :as sql]
-            [swanson.utils :refer [date-converter]]
-            [clj-time.core :as time-core]
-            [swanson.models.matcher :as matcher])
+            [swanson.models.matcher :as matcher]
+            [swanson.utils :refer [load-config date-converter]])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
+(def config-file-name
+  (or  (System/getenv  "SWANSON_CONFIG")
+      "dev-config.edn"))
+
+(def db-config
+ (load-config
+  (io/resource config-file-name)))
+
 (def db-spec {:classname "org.postgresql.Driver"
               :subprotocol "postgresql"
-              :subname "//localhost:5432/swanson"
-              :user "admin"
-              :password "admin"})
+              :subname (:subname db-config)
+              :user (:user db-config)
+              :password (:password db-config)})
 
 (defn create-users-table []
   (jdbc/db-do-commands db-spec
