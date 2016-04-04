@@ -14,7 +14,8 @@
                  [clj-time "0.11.0"]
                  [java-jdbc/dsl "0.1.3"]
                  [cljs-http "0.1.18"]
-                 [org.clojure/core.async "0.2.374"]]
+                 [org.clojure/core.async "0.2.374"]
+                 [ragtime  "0.5.2"]]
   :plugins [[lein-ring "0.8.12"]
             [com.jakemccrary/lein-test-refresh "0.12.0"]]
   :ring {:handler swanson.handler/app
@@ -37,4 +38,7 @@
                    [clj-webdriver "0.7.2"]
                    [org.seleniumhq.selenium/selenium-server "2.52.0"]
                    [javax.servlet/servlet-api "2.5"]
-                   [ring/ring-jetty-adapter "1.4.0"]]}})
+                   [ring/ring-jetty-adapter "1.4.0"]]}}
+
+  :aliases  {"migrate" ["run"  "-m" "swanson.models.db/migrate"]
+             "rollback" ["run" "-m" "swanson.models.db/rollback"]})

@@ -1,0 +1,26 @@
+{
+ :up [
+      "CREATE TABLE users (
+      id serial PRIMARY KEY,
+      fname varchar (100) NOT NULL,
+      lname varchar (100) NOT NULL,
+      email varchar (100) NOT NULL,
+      encrypted_password varchar(100));"
+
+      "CREATE TABLE transactions (
+      id serial PRIMARY KEY,
+      amount float NOT NULL,
+      date date NOT NULL,
+      category_id int NOT NULL,
+      description varchar(512) NOT NULL);"
+
+      "CREATE TABLE categories (
+      id serial primary key,
+      name varchar(512) NOT NULL);"
+      ]
+ :down [
+        "DROP TABLE users;"
+        "DROP TABLE transactions;"
+        "DROP TABLE categories;"
+        ]
+ }

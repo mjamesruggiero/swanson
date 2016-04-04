@@ -5,9 +5,15 @@
             [java-jdbc.ddl :as ddl]
             [java-jdbc.sql :as sql]
             [swanson.models.matcher :as matcher]
-            [swanson.utils :refer [load-config date-converter]])
+            [swanson.utils :refer [load-config date-converter]]
+            [ragtime.jdbc :as migration-jdbc]
+            [ragtime.repl :as repl])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;          config
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (def config-file-name
   (or  (System/getenv  "SWANSON_CONFIG")
@@ -23,32 +29,19 @@
               :user (:user db-config)
               :password (:password db-config)})
 
-(defn create-users-table []
-  (jdbc/db-do-commands db-spec
-                       (ddl/create-table
-                         :users
-                         [:id "serial primary key"]
-                         [:fname "varchar(100) NOT NULL"]
-                         [:lname "varchar(100) NOT NULL"]
-                         [:email "varchar(100) NOT NULL"]
-                         [:encrypted_password "varchar(100)"])))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;          migrations
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defn create-transactions-table []
-  (jdbc/db-do-commands db-spec
-                       (ddl/create-table
-                         :transactions
-                         [:id "serial primary key"]
-                         [:amount "float NOT NULL"]
-                         [:date "date NOT NULL"]
-                         [:category_id "int NOT NULL"]
-                         [:description "varchar(512) NOT NULL"])))
+(defn migration-config []
+  {:datastore (migration-jdbc/sql-database db-spec)
+   :migrations (migration-jdbc/load-resources "migrations")})
 
-(defn create-categories-table []
-  (jdbc/db-do-commands db-spec
-                       (ddl/create-table
-                         :categories
-                         [:id "serial primary key"]
-                         [:name "varchar(512) NOT NULL"])))
+(defn migrate []
+  (repl/migrate (migration-config)))
+
+(defn rollback []
+  (repl/rollback (migration-config)))
 
 (defn get-user
   [email]
