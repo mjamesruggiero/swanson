@@ -1,0 +1,46 @@
+{
+ :up
+ [
+  "INSERT INTO categories (name) VALUES ('amazon');",
+  "INSERT INTO categories (name) VALUES ('asset');",
+  "INSERT INTO categories (name) VALUES ('atm');",
+  "INSERT INTO categories (name) VALUES ('cash');",
+  "INSERT INTO categories (name) VALUES ('check');",
+  "INSERT INTO categories (name) VALUES ('clothing');",
+  "INSERT INTO categories (name) VALUES ('credit card');",
+  "INSERT INTO categories (name) VALUES ('dining');",
+  "INSERT INTO categories (name) VALUES ('education');",
+  "INSERT INTO categories (name) VALUES ('entertainment');",
+  "INSERT INTO categories (name) VALUES ('grocery');",
+  "INSERT INTO categories (name) VALUES ('health and exercise');",
+  "INSERT INTO categories (name) VALUES ('household');",
+  "INSERT INTO categories (name) VALUES ('interest');",
+  "INSERT INTO categories (name) VALUES ('paypal');",
+  "INSERT INTO categories (name) VALUES ('salary');",
+  "INSERT INTO categories (name) VALUES ('savings');",
+  "INSERT INTO categories (name) VALUES ('transportation');",
+  "INSERT INTO categories (name) VALUES ('utilities');"
+  ]
+ :down
+ [
+  "DELETE FROM categories WHERE name = 'amazon';",
+  "DELETE FROM categories WHERE name = 'asset';",
+  "DELETE FROM categories WHERE name = 'atm';",
+  "DELETE FROM categories WHERE name = 'cash';",
+  "DELETE FROM categories WHERE name = 'check';",
+  "DELETE FROM categories WHERE name = 'clothing';",
+  "DELETE FROM categories WHERE name = 'credit card';",
+  "DELETE FROM categories WHERE name = 'dining';",
+  "DELETE FROM categories WHERE name = 'education';",
+  "DELETE FROM categories WHERE name = 'entertainment';",
+  "DELETE FROM categories WHERE name = 'grocery';",
+  "DELETE FROM categories WHERE name = 'health and exercise';",
+  "DELETE FROM categories WHERE name = 'household';",
+  "DELETE FROM categories WHERE name = 'interest';",
+  "DELETE FROM categories WHERE name = 'paypal';",
+  "DELETE FROM categories WHERE name = 'salary';",
+  "DELETE FROM categories WHERE name = 'savings';",
+  "DELETE FROM categories WHERE name = 'transportation';",
+  "DELETE FROM categories WHERE name = 'utilities';"
+  ]
+}

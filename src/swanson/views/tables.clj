@@ -26,6 +26,7 @@
     [:div {:class "container"} [:h2 "Categories YTD"]]
     [:div {:id "chart-div"}]))
 
+;; TODO remove hardcoded "unknown" id
 (defn category-form
   "generates form for category selection; category 2 is 'unknown'"
   ([categories transaction-id]
