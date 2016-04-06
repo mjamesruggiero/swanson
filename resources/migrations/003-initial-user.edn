@@ -1,0 +1,13 @@
+{
+ :up
+ [
+  "INSERT
+    INTO users (fname, lname, email, encrypted_password)
+    VALUES (
+      'Michael',
+      'Ruggiero',
+      'mjamesruggiero@gmail.com',
+      '$2a$10$2C6d746tic9S.JVurH19q.7OwxYhb51.x7CSDjgueIjiLTczrREY6');"
+  ]
+ :down [ "DELETE FROM users WHERE email = 'mjamesruggiero@gmail.com';" ]
+}
