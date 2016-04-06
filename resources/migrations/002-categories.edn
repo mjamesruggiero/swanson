@@ -19,6 +19,7 @@
   "INSERT INTO categories (name) VALUES ('salary');",
   "INSERT INTO categories (name) VALUES ('savings');",
   "INSERT INTO categories (name) VALUES ('transportation');",
+  "INSERT INTO categories (name) VALUES ('unknown');"
   "INSERT INTO categories (name) VALUES ('utilities');"
   ]
  :down
@@ -41,6 +42,7 @@
   "DELETE FROM categories WHERE name = 'salary';",
   "DELETE FROM categories WHERE name = 'savings';",
   "DELETE FROM categories WHERE name = 'transportation';",
+  "DELETE FROM categories WHERE name = 'unknown';",
   "DELETE FROM categories WHERE name = 'utilities';"
   ]
 }
