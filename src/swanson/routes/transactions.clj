@@ -93,6 +93,14 @@
     handler
     (layout/four-oh-one)))
 
+(defn summary
+  "summary page with weeks, months, and recents"
+  []
+  (session-handler (tables/summary
+                     (db/get-transactions-by-week)
+                     (db/recent-transactions (:transactions default-params))
+                     (db/last-n-months (:months default-params)))))
+
 (defroutes transaction-routes
   (GET "/transactions" [] (session-handler (transactions)))        ; index
   (POST "/transactions" [] (post-transaction))                     ; create
@@ -104,7 +112,4 @@
   (GET "/by-week" [] (by-week))
   (GET "/months" [] (months))
   (GET "/uncategorized" [] (session-handler (uncategorized)))
-  (GET "/summary" [] (session-handler (tables/summary
-                      (db/get-transactions-by-week)
-                      (db/recent-transactions (:transactions default-params))
-                      (db/last-n-months (:months default-params))))))
+  (GET "/summary" [] (summary)))
