@@ -104,7 +104,8 @@
   (sha256 (apply str date amount description)))
 
 (def week-grouping-query
-  "SELECT date_trunc('week', t.date) AS Week , SUM(t.amount) AS total
+  "SELECT date_trunc('week', t.date) AS Week,
+  round(SUM(t.amount)::numeric, 2) AS total
   FROM transactions t
   WHERE t.date > now() - interval '1 year'
   GROUP BY Week
@@ -147,7 +148,9 @@
 (defn recent-transactions
   [limit]
   (jdbc/query db-spec
-              ["SELECT t.id, t.amount, t.date, t.description, c.name
+              ["SELECT t.id,
+               round(t.amount::numeric, 2) AS amount,
+               t.date, t.description, c.name
                FROM transactions t
                INNER JOIN categories c
                ON c.id = t.category_id
@@ -158,7 +161,7 @@
   [category-id]
   (jdbc/query db-spec
               ["SELECT EXTRACT(month FROM transactions.date) AS month,
-               SUM(transactions.amount) AS amount
+               round(SUM(transactions.amount)::numeric, 2) AS amount
                FROM transactions WHERE category_id = ?
                GROUP by month ORDER
                BY month DESC" category-id]))
@@ -179,7 +182,7 @@
   [category-id]
   (jdbc/query db-spec
               ["SELECT EXTRACT(DOY from transactions.date) doy,
-               SUM(transactions.amount)
+               round(SUM(transactions.amount)::numeric, 2) AS amount
                FROM transactions WHERE category_id = ?
                AND EXTRACT(ISOYEAR FROM transactions.date) =
                 EXTRACT(ISOYEAR FROM current_date)
