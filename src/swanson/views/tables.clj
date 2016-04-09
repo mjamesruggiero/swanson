@@ -9,7 +9,7 @@
 (defn summary [weeks recent six-months]
   (layout/common
     [:div {:class "container"}
-     (layout/panel-table "By Week" [:total :date] weeks)]
+     (layout/panel-table "Last Twelve Weeks" [:total :date] weeks)]
     [:div {:class "container"} [:h2 "Recent"]]
     [:canvas {:id "weekly-chart" :width "400" :height "400"}]
     [:script {:src "/js/Chart.min.js", :type "text/javascript"}]
