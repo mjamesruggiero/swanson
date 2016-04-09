@@ -8,15 +8,16 @@
 
 (defn summary [weeks recent six-months]
   (layout/common
-    [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"}
      (layout/panel-table "By Week" [:total :date] weeks)]
     [:div {:class "container"} [:h2 "Recent"]]
-    [:div {:id "chart-div"}]
+    [:canvas {:id "weekly-chart" :width "400" :height "400"}]
+    [:script {:src "/js/Chart.min.js", :type "text/javascript"}]
     [:div {:class "container"}
      (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]
+    [:canvas {:id "monthly-chart" :width "400" :height "400"}]
+    [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"} [:h2 "Last six months"]]
-    [:div {:id "six-months-chart-div"}]
     [:div {:class "container"}
      (layout/panel-table "Months" [:amount :month :year] six-months)]))
 
