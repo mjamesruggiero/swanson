@@ -6,16 +6,19 @@
     [swanson.models.db :as db]
     [swanson.utils :as utils]))
 
+;;
+;; TODO this is a mess; make into smaller components
+;;
 (defn summary [weeks recent six-months]
   (layout/common
     [:div {:class "container"}
      (layout/panel-table "Last Twelve Weeks" [:total :date] weeks)]
     [:div {:class "container"} [:h2 "Recent"]]
     [:canvas {:id "weekly-chart" :width "400" :height "400"}]
-    [:script {:src "/js/Chart.min.js", :type "text/javascript"}]
     [:div {:class "container"}
      (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]
     [:canvas {:id "monthly-chart" :width "400" :height "400"}]
+    [:script {:src "/js/Chart.min.js", :type "text/javascript"}]
     [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"} [:h2 "Last six months"]]
     [:div {:class "container"}
@@ -27,7 +30,9 @@
     [:div {:class "container"} [:h2 "Categories YTD"]]
     [:div {:id "chart-div"}]))
 
+;;
 ;; TODO remove hardcoded "unknown" id
+;;
 (defn category-form
   "generates form for category selection; category 2 is 'unknown'"
   ([categories transaction-id]
