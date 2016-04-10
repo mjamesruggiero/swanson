@@ -6,23 +6,31 @@
     [swanson.models.db :as db]
     [swanson.utils :as utils]))
 
-;;
-;; TODO this is a mess; make into smaller components
-;;
+(defn recent-section [recent]
+  [:div {:class "container"}
+   (layout/panel-table
+     "Recent"
+     [:category :description :date :amount :id]
+     recent)])
+
+(defn last-six-months-section
+  [six-months]
+    [:div {:class "container"}
+     (layout/panel-table "Months" [:amount :month :year] six-months)])
+
 (defn summary [weeks recent six-months]
   (layout/common
     [:div {:class "container"}
      (layout/panel-table "Last Twelve Weeks" [:total :date] weeks)]
-    [:div {:class "container"} [:h2 "Recent"]]
+    [:div {:class "container"} [:h2 "Last Twelve Weeks"]]
     [:canvas {:id "weekly-chart" :width "400" :height "400"}]
-    [:div {:class "container"}
-     (layout/panel-table "Recent" [:category :description :date :amount :id] recent)]
+    [:div {:class "container"} [:h2 "Last 25 Transactions"]]
+    (recent-section recent)
     [:canvas {:id "monthly-chart" :width "400" :height "400"}]
     [:script {:src "/js/Chart.min.js", :type "text/javascript"}]
     [:script {:src "/js/app.js", :type "text/javascript"}]
     [:div {:class "container"} [:h2 "Last six months"]]
-    [:div {:class "container"}
-     (layout/panel-table "Months" [:amount :month :year] six-months)]))
+    (last-six-months-section six-months)))
 
 (defn categories []
   (layout/common
