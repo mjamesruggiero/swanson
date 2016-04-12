@@ -31,7 +31,6 @@
   (html5
     [:head
      [:title "swanson"]
-     [:script {:type "text/javascript" :src "https://www.google.com/jsapi"}]
      [:script {:type "text/javascript" :src "/js/jquery-2.2.1.min.js"}]
      [:script {:type "text/javascript" :src "/js/bootstrap.min.js"}]
      [:script {:type "text/javascript" :src "/js/underscore-min.js"}]
