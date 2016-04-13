@@ -56,11 +56,6 @@
       [:fname :lname :email :encrypted_password]
       [fname lname email encrypted-pass]))
 
-(defn get-category
-  [name]
-  (jdbc/query db-spec
-      (sql/select * :categories (sql/where {:name name}))))
-
 (defn create-category
   [category]
   (jdbc/insert! db-spec
@@ -73,6 +68,11 @@
   (jdbc/query db-spec
               (sql/select * :transactions (sql/where {:id id}))))
 
+(defn get-category
+  [name]
+  (jdbc/query db-spec
+    (sql/select * :categories (sql/where {:name name}))))
+
 (defn get-category-id
   "Get id corresponding to category match or return 'unknown'"
   [category-name]
@@ -83,15 +83,18 @@
         category-id (fetch-category category-name)]
     (or category-id (fetch-category "unknown"))))
 
+(def category-id
+  (memoize get-category-id))
+
 (defn create-transaction
   [{:keys [amount date description]}]
   (let [converted-date (date-converter date)
         matching-category (matcher/match-description description)
-        category-id (get-category-id matching-category)]
+        category (category-id matching-category)]
     (jdbc/insert! db-spec
       :transactions
       [:amount :date :category_id :description]
-      [amount converted-date category-id description])))
+      [amount converted-date category description])))
 
 (defn- sha256-digest [bs]
   (doto (MessageDigest/getInstance "SHA-256") (.update bs)))

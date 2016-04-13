@@ -38,13 +38,10 @@
     [:div {:class "container"} [:h2 "Categories YTD"]]
     [:div {:id "chart-div"}]))
 
-;;
-;; TODO remove hardcoded "unknown" id
-;;
 (defn category-form
-  "generates form for category selection; category 2 is 'unknown'"
+  "generates form for category selection; default 'unknown'"
   ([categories transaction-id]
-   (category-form categories transaction-id 2))
+   (category-form categories transaction-id (db/category-id "unknown")))
   ([categories transaction-id selected]
    [:form-to {:post ""  :novalidate "" :role "form"}
     (form/drop-down {:class "form-control"}
