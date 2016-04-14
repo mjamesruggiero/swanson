@@ -96,16 +96,6 @@
       [:amount :date :category_id :description]
       [amount converted-date category description])))
 
-(defn- sha256-digest [bs]
-  (doto (MessageDigest/getInstance "SHA-256") (.update bs)))
-
-(defn sha256 [msg]
-  (-> msg .getBytes sha256-digest .digest DatatypeConverter/printHexBinary))
-
-(defn mk-transaction-id
-  [date amount description]
-  (sha256 (apply str date amount description)))
-
 (def week-grouping-query
   "SELECT date_trunc('week', t.date) AS Week,
   round(SUM(t.amount)::numeric, 2) AS total
