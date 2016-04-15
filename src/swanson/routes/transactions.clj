@@ -2,6 +2,7 @@
   (:require [compojure.core :refer :all]
             [liberator.core :refer [resource defresource]]
             [swanson.models.db :as db]
+            [swanson.models.category :as category]
             [swanson.utils :as utils]
             [swanson.views.layout :as layout]
             [swanson.views.tables :as tables]
@@ -27,7 +28,7 @@
                 parsed-id (utils/parse-number id)
                 params (utils/parse-transaction body)
                 category-id (utils/parse-number (:category_id params))]
-            (db/update-category-id parsed-id category-id)))
+            (category/update-category-id parsed-id category-id)))
   :respond-with-entity? true)
 
 (defresource transaction [id]
@@ -54,21 +55,21 @@
 (defn transactions []
   (let [limit (:transactions default-params)
         transactions (db/get-all-transactions limit)
-        categories (db/all-categories)]
+        categories (category/all)]
     (tables/transactions-with-category-form transactions categories)))
 
 (defn uncategorized []
-  (let [category (db/get-category "unknown")
-        transactions (db/for-category (:id (first category)))
-        categories (db/all-categories)]
+  (let [category (category/by-name "unknown")
+        transactions (category/transactions (:id (first category)))
+        categories (category/all)]
     (tables/transactions-with-category-form transactions categories)))
 
 (defn category [category-id]
-  (let [result (db/category-monthly (Integer/parseInt category-id))]
+  (let [result (category/monthly (Integer/parseInt category-id))]
     (utils/json-response result)))
 
 (defn categories-ytd []
-  (let [result (db/categories-ytd)]
+  (let [result (category/ytd)]
     (utils/json-response result)))
 
 (defn months []
@@ -76,7 +77,7 @@
     (utils/json-response result)))
 
 (defn categories-last-month []
-  (let [result (db/categories-last-month)]
+  (let [result (category/last-month)]
     (utils/json-response result)))
 
 (defn categories-handler [params]

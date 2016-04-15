@@ -4,6 +4,7 @@
     [hiccup.element :refer [javascript-tag]]
     [hiccup.form :as form]
     [swanson.models.db :as db]
+    [swanson.models.category :as category]
     [swanson.utils :as utils]))
 
 (defn recent-section [recent]
@@ -41,7 +42,7 @@
 (defn category-form
   "generates form for category selection; default 'unknown'"
   ([categories transaction-id]
-   (category-form categories transaction-id (db/category-id "unknown")))
+   (category-form categories transaction-id (category/id "unknown")))
   ([categories transaction-id selected]
    [:form-to {:post ""  :novalidate "" :role "form"}
     (form/drop-down {:class "form-control"}
