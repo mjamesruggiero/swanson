@@ -4,30 +4,14 @@
             [java-jdbc.ddl :as ddl]
             [java-jdbc.sql :as sql]
             [swanson.models.matcher :as matcher]
-            [swanson.utils :refer [load-config date-converter]]
+            [swanson.utils :refer [db-config load-config date-converter]]
             [ragtime.jdbc :as migration-jdbc]
             [ragtime.repl :as repl])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;          config
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; TODO remove this duplication of DB config
-
-(def config-file-name
-  (or  (System/getenv  "SWANSON_CONFIG")
-      "dev-config.edn"))
-
-(def db-config
- (load-config
-  (io/resource config-file-name)))
-
-(def db-spec {:classname "org.postgresql.Driver"
-              :subprotocol "postgresql"
-              :subname (:subname db-config)
-              :user (:user db-config)
-              :password (:password db-config)})
+(def db-spec
+  (db-config))
 
 (defn create
   [category]

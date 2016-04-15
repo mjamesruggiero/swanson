@@ -113,3 +113,14 @@
   "loads EDN config from a file"
   [filename]
   (edn/read-string (slurp filename)))
+
+(defn db-config
+  "load db config"
+  []
+  (let [config-file-name (or (System/getenv "SWANSON_CONFIG") "dev-config.edn")
+        conf (load-config (io/resource config-file-name))]
+    {:classname "org.postgresql.Driver"
+     :subprotocol "postgresql"
+     :subname (:subname conf)
+     :user (:user conf)
+     :password (:password conf)}))
