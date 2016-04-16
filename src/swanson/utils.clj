@@ -115,10 +115,13 @@
   (edn/read-string (slurp filename)))
 
 (defn db-config
-  "load db config"
-  []
-  (let [config-file-name (or (System/getenv "SWANSON_CONFIG") "dev-config.edn")
-        conf (load-config (io/resource config-file-name))]
+  "load db config; defaults to Dev config but will optionally
+  take key/val pair :config-file <file-name>
+  (e.g. 'test-config.edn')"
+  [& {:keys  [config-file]
+      :or  {config-file  "dev-config.edn"}}]
+  (let [file-path (or (System/getenv "SWANSON_CONFIG") config-file)
+        conf (load-config (io/resource file-path))]
     {:classname "org.postgresql.Driver"
      :subprotocol "postgresql"
      :subname (:subname conf)
