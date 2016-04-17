@@ -1,12 +1,5 @@
-FROM java:8
+FROM clojure:onbuild
 
 MAINTAINER Michael Ruggiero<mjamesruggiero@gmail.com>
 
-CMD ["sudo", "apt-get", "update"]
-
-ADD target/swanson-0.1.0-SNAPSHOT-standalone.jar /srv/swanson.jar
-
-ENV PORT 8080
-EXPOSE 8080
-
-CMD ["java", "-jar", "/srv/swanson.jar"]                         
+CMD ["lein", "run"]
