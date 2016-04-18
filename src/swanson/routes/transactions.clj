@@ -3,6 +3,7 @@
             [liberator.core :refer [resource defresource]]
             [swanson.models.db :as db]
             [swanson.models.category :as category]
+            [swanson.models.transaction :as transaction]
             [swanson.utils :as utils]
             [swanson.views.layout :as layout]
             [swanson.views.tables :as tables]
@@ -16,7 +17,7 @@
   :handle-ok ::data
   :post! (fn [ctx]
              (let [body (slurp (get-in ctx [:request :body]))]
-               (db/create-transaction (utils/parse-transaction body))))
+               (transaction/create (utils/parse-transaction body))))
   :respond-with-entity? true)
 
 (defresource update-transaction [id]
@@ -35,7 +36,7 @@
   :allowed-methods [:options :get]
   :available-media-types ["application/json"]
   :exists? (fn [ctx]
-             (let [transaction (db/get-transaction (Integer/parseInt id))
+             (let [transaction (transaction/by-id (Integer/parseInt id))
                    transaction-exists? (seq? transaction)]
                (if transaction-exists?
                    {:transaction transaction})))
@@ -50,11 +51,11 @@
    :transactions 25})
 
 (defn by-week []
-  (utils/json-response (db/get-transactions-by-week)))
+  (utils/json-response (transaction/by-week)))
 
 (defn transactions []
   (let [limit (:transactions default-params)
-        transactions (db/get-all-transactions limit)
+        transactions (transaction/all limit)
         categories (category/all)]
     (tables/transactions-with-category-form transactions categories)))
 
@@ -73,7 +74,7 @@
     (utils/json-response result)))
 
 (defn months []
-  (let [result (db/last-n-months (:months default-params))]
+  (let [result (transaction/last-n-months (:months default-params))]
     (utils/json-response result)))
 
 (defn categories-last-month []
@@ -98,9 +99,9 @@
   "summary page with weeks, months, and recents"
   []
   (session-handler (tables/summary
-                     (db/get-transactions-by-week)
-                     (db/recent-transactions (:transactions default-params))
-                     (db/last-n-months (:months default-params)))))
+                     (transaction/by-week)
+                     (transaction/recent (:transactions default-params))
+                     (transaction/last-n-months (:months default-params)))))
 
 (defroutes transaction-routes
   (GET "/transactions" [] (session-handler (transactions)))        ; index
