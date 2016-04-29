@@ -7,6 +7,7 @@
             [noir.response :as resp]
             [noir.validation :as vali]
             [swanson.models.db :as db]
+            [swanson.models.user :as user]
             [noir.util.crypt :as crypt]))
 
 (defn valid? [fname lname email pass pass1]
@@ -31,6 +32,7 @@
 
 (defn registration-page [& [id]]
   (layout/common
+    [:div {:class "container"}
     (form-to [:post "/register"]
              (control :fname
                       (label "fname" "first name")
@@ -47,7 +49,7 @@
              (control :pass1
                       (label "pass1" "retype password")
                       (password-field {:tabindex 3} "pass1"))
-             (submit-button {:class "btn btn-default" :tabindex 4} "create account"))))
+             (submit-button {:class "btn btn-default" :tabindex 4} "create account"))]))
 
 (defn format-error [email ex]
   (cond
@@ -60,7 +62,7 @@
 (defn handle-registration [fname lname email pass pass1]
   (if (valid? fname lname email pass pass1)
     (try
-      (db/create-user fname lname email (crypt/encrypt pass))
+      (user/create fname lname email (crypt/encrypt pass))
       (session/put! :user email)
       (resp/redirect "/")
       (catch Exception ex
@@ -69,7 +71,7 @@
     (registration-page email)))
 
 (defn handle-login [email pass]
-  (let [user (db/get-user email)]
+  (let [user (user/by-email email)]
     (if (and user (crypt/compare pass (:encrypted_password user)))
       (session/put! :user email)))
   (resp/redirect "/"))

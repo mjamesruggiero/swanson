@@ -28,16 +28,3 @@
 
 (defn rollback []
   (repl/rollback (migration-config)))
-
-(defn get-user
-  [email]
-  (let [user-seq (jdbc/query db-spec
-                             (sql/select * :users (sql/where {:email email})))]
-    (first user-seq)))
-
-(defn create-user
-  [fname lname email encrypted-pass]
-  (jdbc/insert! db-spec
-      :users
-      [:fname :lname :email :encrypted_password]
-      [fname lname email encrypted-pass]))
