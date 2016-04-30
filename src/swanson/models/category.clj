@@ -117,3 +117,12 @@
   (jdbc/query db-spec
               ["SELECT id, name
                FROM categories ORDER BY name ASC"]))
+
+(defn by-week [category-id]
+  (jdbc/query db-spec ["SELECT date_trunc('week', t.date) AS Week,
+                       round(SUM(t.amount)::numeric, 2) AS total
+                       FROM transactions t
+                       WHERE t.date > now() - interval '1 year'
+                       AND t.category_id = ?
+                       GROUP BY Week
+                       ORDER BY Week ASC LIMIT 12" category-id]))
