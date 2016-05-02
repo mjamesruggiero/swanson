@@ -73,6 +73,10 @@
   (let [result (category/ytd)]
     (utils/json-response result)))
 
+(defn category-by-week [category-id]
+  (let [result (category/by-week (Integer/parseInt category-id))]
+    (utils/json-response result)))
+
 (defn months []
   (let [result (transaction/last-n-months (:months default-params))]
     (utils/json-response result)))
@@ -109,6 +113,7 @@
   (GET "/transactions/:id" [id] (transaction id))                  ; show
   (PUT "/transactions/:id" [id] (update-transaction id))           ; update
   (GET "/categories/:id" [id] (category id))                       ; show
+  (GET "/category-by-week/:id" [id] (category-by-week id))
   (GET "/categories" {params :params} []
        (categories-handler params))
   (GET "/by-week" [] (by-week))
