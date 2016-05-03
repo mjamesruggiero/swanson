@@ -3,12 +3,12 @@
             [ring.mock.request :refer :all]
             [swanson.handler :refer :all]))
 
-(deftest test-transactions-route
+(deftest test-transactions-vanilla
   (testing  "transactions route works"
     (let  [response  (app  (request :get  "/transactions"))]
       (is  (= (:status response) 200)))))
 
-(deftest test-transactions-route
+(deftest test-transactions-post
   (testing  "transactions route works"
     (let  [req (request :put "/transactions/826")
            json "{\"category_id\": \"4\"}"
