@@ -1,17 +1,17 @@
-(defproject swanson "0.1.0-SNAPSHOT"
-  :description "Working with liberator"
+(defproject swanson "0.1.1"
+  :description "Spend tracker"
   :url "http://mjamesruggiero.com"
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.1.6"]
                  [hiccup "1.0.5"]
                  [ring-server "0.3.1"]
                  [liberator "0.11.0"]
-                 [cheshire "5.3.1"]
+                 [cheshire "5.6.2"]
                  [lib-noir "0.7.2"]
                  [org.clojure/java.jdbc "0.4.2"]
                  [org.postgresql/postgresql "9.4.1208"]
                  [org.clojure/data.csv "0.1.3"]
-                 [clj-time "0.11.0"]
+                 [clj-time "0.12.0"]
                  [java-jdbc/dsl "0.1.3"]
                  [cljs-http "0.1.18"]
                  [org.clojure/core.async "0.2.374"]
