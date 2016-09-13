@@ -28,7 +28,7 @@ psql -h <CONTAINER-IP-ADDRESS> -p 5432 -U admin -W swanson_development
 
 ### What's with the name?
 
-<img src="http://showrenity.com/wp-content/uploads/2013/07/tumblr_mp0mow3b8y1r8269to1_500.gif" />
+<img src="doc/swansonhell.gif" alt="Ron Swanson" />
 
 ## License
 
