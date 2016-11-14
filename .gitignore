@@ -11,3 +11,4 @@ TODO.md
 .ropeproject/
 bin/ops.vars
 TODO.org
+resources/production-config.edn
