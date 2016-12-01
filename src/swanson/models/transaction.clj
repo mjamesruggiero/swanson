@@ -18,26 +18,16 @@
   (jdbc/query db-spec
               (sql/select * :transactions (sql/where {:id id}))))
 
-(defn create
+(defn- create-record
+  "Inserts database row"
   [{:keys [amount date description]}]
   (let [converted-date (date-converter date)
         matching-category (matcher/match-description description)
         c (category/id matching-category)]
     (jdbc/insert! db-spec
-      :transactions
-      [:amount :date :category_id :description]
-      [amount converted-date c description])))
-
-(def week-grouping-query
-  "SELECT date_trunc('week', t.date) AS Week,
-  round(SUM(t.amount)::numeric, 2) AS total
-  FROM transactions t
-  WHERE t.date > now() - interval '1 year'
-  GROUP BY Week
-  ORDER BY Week ASC LIMIT 12")
-
-(defn by-week []
-  (jdbc/query db-spec [week-grouping-query]))
+                  :transactions
+                  [:amount :date :category_id :description]
+                  [amount converted-date c description])))
 
 (defn exists
   "checks if the transaction record already exists"
@@ -49,6 +39,22 @@
                      date = date(?) AND
                      description = ?" amount date description])]
     (pos? (:count (first result)))))
+
+(defn create
+  "checks for existing record and inserts"
+  [transaction]
+  (when-not (exists transaction) (create-record transaction)))
+
+(def week-grouping-query
+  "SELECT date_trunc('week', t.date) AS Week,
+  round(SUM(t.amount)::numeric, 2) AS total
+  FROM transactions t
+  WHERE t.date > now() - interval '1 year'
+  GROUP BY Week
+  ORDER BY Week ASC LIMIT 12")
+
+(defn by-week []
+  (jdbc/query db-spec [week-grouping-query]))
 
 (defn all
   [limit]
