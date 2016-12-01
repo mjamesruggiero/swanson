@@ -67,15 +67,19 @@ if __name__ == '__main__':
 
     parser.add_argument('filepath', action="store")
     parser.add_argument('limit', action="store", type=int)
+    parser.add_argument('endpoint',
+                        action="store",
+                        default="http://localhost:8080/transactions")
 
     logging.info(parser.parse_args())
 
     arguments = parser.parse_args()
     filepath = arguments.filepath
     limit = arguments.limit
+    endpoint = arguments.endpoint
 
     try:
-        main(filepath, limit)
+        main(filepath, limit, endpoint)
     except Exception, err:
         logging.error("error: {e}".format(e=err))
         sys.exit(1)
