@@ -103,6 +103,13 @@
   (io/resource "test-config.edn"))
 
 (deftest load-config-test
-  (testing "description"
+  (testing "reads config file and gets appropriate key/vals"
     (let [conf (load-config config-filepath)]
     (is (= {:foo "foo-value" :bar "bar-value"} conf)))))
+
+(deftest replace-template-test
+  (testing "templates with all keys are correctly populated"
+    (let [template "{foo} likes the {bar} in {baz}-time."
+          m {:foo "Ted" :baz "spring" :bar "rain"}
+          result (replace-template template m)
+      (is (= "Ted likes the rain in spring-time." result)))))

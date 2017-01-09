@@ -6,7 +6,10 @@
             [java-jdbc.sql :as sql]
             [swanson.models.matcher :as matcher]
             [swanson.models.category :as category]
-            [swanson.utils :refer [db-config load-config date-converter]])
+            [swanson.utils :refer [db-config
+                                   load-config
+                                   date-converter
+                                   replace-template]])
   (:import [java.security MessageDigest]
            [javax.xml.bind DatatypeConverter]))
 
@@ -82,3 +85,22 @@
                FROM transactions
                GROUP by year, month ORDER
                BY month DESC LIMIT ?" months]))
+
+(defn spend-per-day
+  "for date span of start to end,
+  spend per day; days without spend appear with zero values"
+  [start end]
+  (let [template
+        "WITH days AS
+        (  SELECT day::date FROM
+           GENERATE_SERIES(date '{start}', date '{end}', INTERVAL '1 day' day) day
+        )
+        SELECT
+          COALESCE(SUM(t.amount), 0) AS daily_amount,
+          d.day AS date
+        FROM
+          days d LEFT JOIN transactions t ON t.date = d.day
+        GROUP BY d.day
+        ORDER BY d.day"
+        query (replace-template template {:start start :end end})]
+    (jdbc/query db-spec [query])))

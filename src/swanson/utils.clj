@@ -6,7 +6,8 @@
     [clj-time.core :as time-core]
     [cheshire.core :refer :all]
     [clojure.edn :as edn]
-    [clojure.data.json :as json]))
+    [clojure.data.json :as json]
+    [clojure.string :as string]))
 
 ; TODO might be better to do this w/o filehandle hassles
 ; a la http://stackoverflow.com/a/19656800
@@ -127,3 +128,7 @@
      :subname (:subname conf)
      :user (:user conf)
      :password (:password conf)}))
+
+(defn replace-template [text m]
+  (clojure.string/replace text #"\{\w+\}"
+                          (comp m keyword string/join butlast rest)))
