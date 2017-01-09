@@ -1,13 +1,13 @@
 (defproject swanson "0.1.1"
   :description "Spend tracker"
   :url "http://mjamesruggiero.com"
-  :dependencies [[org.clojure/clojure "1.6.0"]
-                 [compojure "1.1.6"]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [compojure "1.5.1"]
                  [hiccup "1.0.5"]
-                 [ring-server "0.3.1"]
-                 [liberator "0.11.0"]
-                 [cheshire "5.6.2"]
-                 [lib-noir "0.7.2"]
+                 [ring-server "0.4.0"]
+                 [liberator "0.14.1"]
+                 [cheshire "5.6.3"]
+                 [lib-noir "0.9.9"]
                  [org.clojure/java.jdbc "0.4.2"]
                  [org.postgresql/postgresql "9.4.1208"]
                  [org.clojure/data.csv "0.1.3"]
@@ -38,7 +38,7 @@
                    [clj-webdriver "0.7.2"]
                    [org.seleniumhq.selenium/selenium-server "2.52.0"]
                    [javax.servlet/servlet-api "2.5"]
-                   [ring/ring-jetty-adapter "1.4.0"]]}}
+                   [ring/ring-jetty-adapter "1.5.0"]]}}
 
   :aliases  {"migrate" ["run"  "-m" "swanson.models.db/migrate"]
              "rollback" ["run" "-m" "swanson.models.db/rollback"]})

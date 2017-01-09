@@ -40,21 +40,21 @@
           test-json-string "{\"date\": \"2015-11-19\", \"description\": \"fake description\", \"amount\": 1.00}"]
       (is (= expected-map (parse-transaction test-json-string))))))
 
-
 (deftest parse-number-test
   (testing "can convert string to number (and take default)"
     (is (= 0 (parse-number "foo"))
-    (is (= 1 (parse-number "1"))
-    (is (= 10 (parse-number "foo" 10)))))))
+        (is (= 1 (parse-number "1"))
+            (is (= 10 (parse-number "foo" 10)))))))
 
 (deftest json-response-test
   (testing "can build generic JSON endpoint response"
     (let [expected-response {:status 200,
                              :headers {"Content-Type" "application/json"},
-                             :body "{\"baz\":[1,2,3],\"bar\":\"this is bar\",\"foo\":\"this is foo\"}"}]
+                             :body
+                             "{\"foo\":\"this is foo\",\"bar\":\"this is bar\",\"baz\":[1,2,3]}"}]
       (is (= expected-response (json-response {:foo "this is foo"
-                                              :bar "this is bar"
-                                              :baz [1 2 3]}))))))
+                                               :bar "this is bar"
+                                               :baz [1 2 3]}))))))
 
 (deftest pad-days-pads-das-with-zero
   (testing "given a map of days, any missing days are set as zero"
@@ -80,15 +80,15 @@
           expected '({:category "unknown", :delta 0.00M}
                      {:category "check", :delta 0.00M}
                      {:category "savings", :delta 0.00M})]
-    (is (= expected (compare-category-tallies first-lom second-lom :cost :category))))))
+      (is (= expected (compare-category-tallies first-lom second-lom :cost :category))))))
 
 (deftest maps->keyed-seq-test
   (testing "turns seq of maps into keyed vectors of map values
            whose key is the identifying value (e.g. the 'id')"
     (let [m [{:foo "foo" :bar "bar"} {:foo "not-foo" :bar "not-bar"}]
           result (maps->keyed-seq m :foo)
-          expected '({"foo" ("bar" "foo")} {"not-foo" ("not-bar" "not-foo")})]
-    (is (= expected result)))))
+          expected '({"foo" ("foo" "bar")} {"not-foo" ("not-foo" "not-bar")})]
+      (is (= expected result)))))
 
 (deftest maps->tablerows-test
   (testing "converts seq of maps into header row and ordered seq of seqs"
@@ -97,7 +97,7 @@
           expected '([:bar :foo :baz]
                      ("bar1" "foo1" "baz1")
                      ("bar2" "foo2" "baz2"))]
-    (is (= expected (maps->tablerows [:bar :foo :baz] rows))))))
+      (is (= expected (maps->tablerows [:bar :foo :baz] rows))))))
 
 (def config-filepath
   (io/resource "test-config.edn"))
@@ -105,11 +105,11 @@
 (deftest load-config-test
   (testing "reads config file and gets appropriate key/vals"
     (let [conf (load-config config-filepath)]
-    (is (= {:foo "foo-value" :bar "bar-value"} conf)))))
+      (is (= {:foo "foo-value" :bar "bar-value"} conf)))))
 
 (deftest replace-template-test
   (testing "templates with all keys are correctly populated"
     (let [template "{foo} likes the {bar} in {baz}-time."
           m {:foo "Ted" :baz "spring" :bar "rain"}
-          result (replace-template template m)
+          result (replace-template template m)]
       (is (= "Ted likes the rain in spring-time." result)))))

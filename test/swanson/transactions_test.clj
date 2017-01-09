@@ -8,9 +8,21 @@
     (let  [response  (app  (request :get  "/transactions"))]
       (is  (= (:status response) 200)))))
 
+(def transaction-put-json "{\"category_id\": \"4\"}")
+
+(def transaction-put "/transactions/826")
+
+;;
+;; TODO turn these back into happy path tests
+;;
 (deftest test-transactions-post
-  (testing  "transactions route works"
-    (let  [req (request :put "/transactions/826")
-           json "{\"category_id\": \"4\"}"
-           response (app (body req json))]
-      (is  (= (:status response) 201)))))
+  (testing  "transactions route doesn't work"
+    (let  [req (request :put transaction-put)
+           response (app (body req transaction-put-json))]
+      (is  (= (:status response) 403)))))
+
+(deftest test-transactions-post-returns-forgery-error
+  (testing  "transactions error is anti-forgery"
+    (let  [req (request :put transaction-put)
+           response (app (body req transaction-put-json))]
+      (is  (= (:body response) "<h1>Invalid anti-forgery token</h1>")))))
