@@ -113,3 +113,9 @@
           m {:foo "Ted" :baz "spring" :bar "rain"}
           result (replace-template template m)]
       (is (= "Ted likes the rain in spring-time." result)))))
+
+(deftest replace-template-test-fails-gracefully
+  (testing "when keys are missing, evaluates to nil"
+    (let [template "{foo} likes the {bar} in {baz}-time."
+          m {:foo "Ted" :baz "spring"}]
+      (is (nil? (replace-template template m))))))

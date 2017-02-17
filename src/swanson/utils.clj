@@ -130,5 +130,6 @@
      :password (:password conf)}))
 
 (defn replace-template [text m]
-  (clojure.string/replace text #"\{\w+\}"
-                          (comp m keyword string/join butlast rest)))
+  (try
+    (clojure.string/replace text #"\{\w+\}" (comp m keyword string/join butlast rest))
+    (catch java.lang.NullPointerException e nil)))
